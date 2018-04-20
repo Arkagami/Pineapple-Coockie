@@ -108,6 +108,9 @@ fs_list = ['https://i.pinimg.com/originals/47/55/39/475539cfe4876c876c91ffbc0a96
 daily_id = []
 names = []
 cookie = []
+waifu_list_own = []
+waifu_list_id = []
+waifu_list_cost = []
 
 
 report = 0
@@ -156,6 +159,21 @@ while line1:
 print('mat_list is ready.')
 f.close()
 
+f = open('waifu', 'r')
+line1 = f.readline()
+line2 = f.readline()
+line3 = f.readline()
+c = 0
+while line1:
+	waifu_list_own.append(line1[:-1])
+	waifu_list_id.append(line2[:-1])
+	waifu_list_cost.append(line3[:-1])
+	line1 = f.readline()
+	line2 = f.readline()
+	line3 = f.readline()
+	c = c + 3
+f.close()
+
 print('------')
 
 random.seed()
@@ -189,7 +207,7 @@ client.loop.create_task(daily_cookie())
 
 @client.event
 async def on_member_join(member):
-	print('---------[command]:' + str(member) + 'join')
+	print('---------[command]:' + str(member) + ' join')
 	role = discord.utils.get(member.server.roles, id='423111586832580608')
 	await client.add_roles(member, role)
 	c = random.randint(1, 2)
@@ -200,7 +218,7 @@ async def on_member_join(member):
 
 @client.event
 async def on_member_remove(member):
-	print('---------[command]:' + str(member) + 'leave')
+	print('---------[command]:' + str(member) + ' leave')
 	c = random.randint(1, 2)
 	if c == 1:
 		await client.send_message(client.get_channel('432948785216225281'), 'Прощай, ' + member.mention + ', будем ждать тебя в гости снова! :BibleRem:')
@@ -240,6 +258,9 @@ async def on_message(message):
 	global is_event
 	global bonus_list
 	global kusi_list
+	global waifu_list_own
+	global waifu_list_id
+	global waifu_list_cost
 
 	if message.content.startswith(prefix + 'btcprice'):
 		print('---------[command]: btcprice ')
@@ -251,7 +272,7 @@ async def on_message(message):
 		await client.send_message(message.channel, 'USD: ' + str(btc_price_usd) + ' | RUB: ' + str(btc_price_rub))
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'login') and message.author.id == '282660110545846272':
+	if await strcmp(message.content, prefix + 'login') and message.author.id == '282660110545846272':
 		print('---------[command]:!login')
 		report = message.author
 		await client.delete_message(message)
@@ -283,41 +304,41 @@ async def on_message(message):
 			stops = 0
 		await client.delete_message(message)
 
-	if (strcmp(message.content, prefix + 'stop') == 1):
+	if (await strcmp(message.content, prefix + 'stop') == 1):
 		print('---------[command]:!stop')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!stop\n```')
 		stops = 1
 		await client.delete_message(message)
 
-	if strcmp(message.content.lower(), 'печенюха') or strcmp(message.content.lower(), 'печенька'):
+	if await strcmp(message.content.lower(), 'печенюха') or await strcmp(message.content.lower(), 'печенька'):
 		print('---------[command]:!cookie')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!cookie\n```')
 		await client.send_message(message.channel, "О, я тоже хочу, поделитесь?:cookie:")
 
-	if strcmp(message.content, prefix + 'ping'):
+	if await strcmp(message.content, prefix + 'ping'):
 		print('---------[command]:!ping')
 		await client.send_message(message.channel, ':sparkles:Туточки:sparkles:')
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'hi'):
+	if await strcmp(message.content, prefix + 'hi'):
 		print('---------[command]:!hi')
 	   #await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!hi')
 		await client.send_message(message.channel, ':sparkles:' + message.author.name + ' приветствует всех:sparkles:\n')
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'pic'):
+	if await strcmp(message.content, prefix + 'pic'):
 		print('---------[command]:!pic')
 		await client.send_message(message.channel, 'Держи арт!')
 		await client.send_file(message.channel, 'pic/konachan.jpg')
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'gm'):
+	if await strcmp(message.content, prefix + 'gm'):
 		print('---------[command]:!gm')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!gm\n```')
 		await client.send_message(message.channel, ':hugging:С добрым утречком:hugging:')
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'help'):
+	if await strcmp(message.content, prefix + 'help'):
 		print('---------[command]:!help')
 		await client.send_message(message.channel, '```css\n' +
 												   '[Pineapple Cookie help]\n\n' +
@@ -328,7 +349,10 @@ async def on_message(message):
 												   prefix + 'give <кому> <сколько> - Поделиться печенюхами с другом.\n' +
 												   prefix + 'rank - Посмотреть на обжор.\n\n' +
 												   '<Events>\n' +
-												   prefix + 'reg - Регистрация для участия в ивентах. Выдает соответствующую роль.\n\n' +
+												   prefix + 'reg - Регистрация для участия в ивентах. Выдает соответствующую роль.\n\n' +												   
+												   '<Waifu>\n' +
+												   prefix + 'get2d <кто> <цена> - Приобрести или выкупить вайфу.\n' +
+												   prefix + '2d - Список вайфу.\n\n' +
 												   '<Fun>\n' +
 												   #'Печенюха/печенька - Попросит вкуснях. Это две команды. Буквы могут быть любого размера.\nПишется без префикса.\n' +
 												   #'Меншн Сони выдаст интересный набор смайликов))). Но не стоит слишком часто юзать эту функцию.\nГрозит перманентным баном по айди на доступ к этой команде.\n' +
@@ -344,7 +368,7 @@ async def on_message(message):
 												   '```')
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'oldhelp') == 1 and message.author.id in admin_list:
+	if await strcmp(message.content, prefix + 'oldhelp') == 1 and message.author.id in admin_list:
 		print('---------[command]:!oldhelp')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!help\n```')
 		await client.send_message(message.channel, '```css\n' +
@@ -358,7 +382,7 @@ async def on_message(message):
 												   '```')
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'save') == 1 and message.author.id in admin_list:
+	if await strcmp(message.content, prefix + 'save') == 1 and message.author.id in admin_list:
 		print('---------[command]:!save')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!save```')
 		save_channel = message.channel
@@ -390,7 +414,7 @@ async def on_message(message):
 		await client.send_message(client.get_channel(channel_list[int(message.content[8]) * 2 - 1][:-1]), message.content[10:])
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'start quiz') == 1 and message.author.id in admin_list:
+	if await strcmp(message.content, prefix + 'start quiz') == 1 and message.author.id in admin_list:
 		print('---------[command]:!start quiz')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!start quiz\n```')
 		quiz_channel = message.channel
@@ -398,7 +422,7 @@ async def on_message(message):
 		await client.send_message(message.channel, 'Викторина началась!')
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'stop quiz') == 1 and message.author.id in admin_list:
+	if await strcmp(message.content, prefix + 'stop quiz') == 1 and message.author.id in admin_list:
 		print('---------[command]:!stop quiz')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!stop quiz\n```')
 		quiz_channel = 0
@@ -433,7 +457,7 @@ async def on_message(message):
 					set_answer[quiz_number] = str(quiz_number + 1) + ')' + message.author.id + ' ' + message.author.name
 					await client.send_message(quiz_channel, '<@' + message.author.id+ '>'+ ', верно!')
 
-	if strcmp(message.content, prefix + 'quizstat') == 1 and message.author.id in admin_list:
+	if await strcmp(message.content, prefix + 'quizstat') == 1 and message.author.id in admin_list:
 		print('---------[command]:!quiz stat')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!quiz stat\n```')
 		ret = '```css'
@@ -443,7 +467,7 @@ async def on_message(message):
 		await client.send_message(message.channel, ret)
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'quizquestions') == 1 and message.author.id in admin_list:
+	if await strcmp(message.content, prefix + 'quizquestions') == 1 and message.author.id in admin_list:
 		print('---------[command]:!quizquestions')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!quizquestions\n```')
 		ret = '```css'
@@ -453,7 +477,7 @@ async def on_message(message):
 		await client.send_message(message.channel, ret)
 		await client.delete_message(message)
 
-	if strcmp(message.content, prefix + 'quizanswers') == 1 and message.author.id in admin_list:
+	if await strcmp(message.content, prefix + 'quizanswers') == 1 and message.author.id in admin_list:
 		print('---------[command]:!quizanswers')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!quizanswers\n```')
 		ret = '```css'
@@ -463,7 +487,7 @@ async def on_message(message):
 		await client.send_message(message.channel, ret)
 		await client.delete_message(message)
 
-	if strcmp(message.content.lower(), 'соня'):
+	if await strcmp(message.content.lower(), 'соня'):
 		print('---------[command]:!sonya')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!sonya\n```')
 		await client.send_message(message.channel, 'Соня лучшая!!!')
@@ -479,7 +503,7 @@ async def on_message(message):
 #------------------------------------------------------------------------------------------------------------------------------
 #         Economics
 #------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'daily reset') == 1 and message.author.id in admin_list and message.channel.id in admin_channel_list:
+	if await strcmp(message.content.lower(), prefix + 'daily reset') == 1 and message.author.id in admin_list and message.channel.id in admin_channel_list:
 		print('---------[command]:!daily reset')
 		daily_id = []
 		f = open('daily', 'w')
@@ -489,7 +513,7 @@ async def on_message(message):
 		await client.send_message(message.channel, 'Ежедневка сброшена.')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'daily'):
+	if await strcmp(message.content.lower(), prefix + 'daily'):
 		print('---------[command]:!daily')
 		if message.author.id in daily_id:
 			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ ', вы уже получили печенюхи)')
@@ -519,7 +543,7 @@ async def on_message(message):
 			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', держи ' + str(cookie_count) + ':cookie:!')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if (strcmp(message.content.lower(), prefix + 'cookie') == 1 or strcmp(message.content.lower(), prefix + 'me') == 1):
+	if (await strcmp(message.content.lower(), prefix + 'cookie') == 1 or await strcmp(message.content.lower(), prefix + 'me') == 1):
 		print('---------[command]:!cookie')
 		if message.author.id in names:
 			c = 0
@@ -527,7 +551,7 @@ async def on_message(message):
 				c = c + 1
 			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя ' + cookie[c] + ':cookie:!')
 		else:
-			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя нет:cookie: :(')
+			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя нет :cookie: :(')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
 	if message.content.startswith(prefix + 'roll '):
@@ -564,31 +588,20 @@ async def on_message(message):
 					f.close()
 					await client.send_message(message.channel, '<@' + message.author.id+ '>, ты проиграл ' + (message.content[6:]) + ':cookie:')
 		else:
-			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет:cookie: :(')
+			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет :cookie: :(')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'cookie update'):
-		print('---------[command]:!cookie update')
-		f = open('cookie', 'r')
-		names = []
-		cookie = []
-		line1 = f.readline()
-		line2 = f.readline()
-		c = 0
-		while line1:
-			names.append(line1[:-1])
-			cookie.append(line2[:-1])
-			line1 = f.readline()
-			line2 = f.readline()
-		f.close()
-		await client.send_message(message.channel, 'Обновлено из файла.')
+	if await strcmp(message.content.lower(), prefix + 'update'):
+		print('---------[command]:!update')
+		updates()
+		await client.send_message(message.channel, 'Обновлено из файлов.')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
 	if message.content.startswith(prefix + 'give '):
 		print('---------[command]:!give')
 		params = message.content.lower().split(' ')
 		if not message.author.id in names:
-			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя нет:cookie: :(')
+			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя нет :cookie: :(')
 		elif params[1][2:-1] in names:
 			c = 0
 			while(names[c] != params[1][2:-1]):
@@ -614,7 +627,79 @@ async def on_message(message):
 			await client.send_message(message.channel, 'Нет такого пользователя :(')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'rank'):
+	if message.content.startswith(prefix + 'get2d '):
+		print('---------[command]:!get2d')
+		comm = message.content.split(' ')
+		if not comm[2].isdigit():
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является числом\nExample: ' + prefix + 'get2d <@someone> 1000\n```')
+		elif not comm[1][2:-1].isdigit() or not comm[1][:2] == '<@' or not comm[1][-1:] == '>':
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'get2d <@someone> 1000\n```')
+		elif comm[1][2:-1] in waifu_list_id:
+			c = 0
+			while(waifu_list_own[c] != message.author.id):
+				c = c + 1
+			k = 0
+			while(names[k] != message.author.id):
+				k = k + 1
+			if (int(comm[2]) > int(waifu_list_cost[c])):
+				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', недостаточно :cookie: для покупки :(')
+			if (int(comm[2]) > int(cookie[k])):
+				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя недостаточно:cookie: :(')
+			else:
+				cookie[k] = str(int(cookie[k]) - int(comm[2]))
+				f = open('cookie', 'w')
+				c = 0
+				for s in cookie:
+					f.write(names[c] + '\n' + s + "\n")
+					c = c + 1
+				f.close()
+				waifu_list_own[c] = message.author.id
+				waifu_list_cost[c] = comm[2]
+				f = open('waifu', 'w')
+				c = 0
+				for s in waifu_list_cost:
+					f.write(waifu_list_own[c] + '\n' + waifu_list_id[c] + '\n' + s + '\n')
+					c = c + 1
+				f.close()
+				await client.send_message(message.channel, message.author.mention + ' выкупил ' + comm[1] + ' за ' + comm[2])
+		else:
+			k = 0
+			while(names[k] != message.author.id):
+				k = k + 1
+			if (int(comm[2]) > int(cookie[k])):
+				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя недостаточно:cookie: :(')
+			else:
+				cookie[k] = str(int(cookie[k]) - int(comm[2]))
+				f = open('cookie', 'w')
+				c = 0
+				for s in cookie:
+					f.write(names[c] + '\n' + s + "\n")
+					c = c + 1
+				f.close()
+				waifu_list_own.append(message.author.id)
+				waifu_list_id.append(comm[1])
+				waifu_list_cost.append(comm[2])
+				f = open('waifu', 'w')
+				c = 0
+				for s in waifu_list_cost:
+					f.write(waifu_list_own[c] + '\n' + waifu_list_id[c] + '\n' + s + '\n')
+					c = c + 1
+				f.close()
+				await client.send_message(message.channel, message.author.mention + ' купил ' + comm[1] + ' за ' + comm[2])
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if await strcmp(message.content, prefix + '2d'):
+		print('---------[command]:!2d')
+		ret = '\n'
+		c = 0
+		for s in waifu_list_id:
+			ret = ret + s + ' принадлежит <@' + waifu_list_own[c] + '>. Цена - ' + waifu_list_cost[c] + ':cookie:\n'
+			c = c + 1
+		em = discord.Embed(title='Список вайфу:', description=ret, colour=0xC5934B)
+		await client.send_message(message.channel, embed=em)
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if await strcmp(message.content.lower(), prefix + 'rank'):
 		print('---------[command]:!rank')
 		f = open('cookie', 'r')
 		line1 = f.readline()
@@ -632,7 +717,7 @@ async def on_message(message):
 		ret = '\n'	
 		while c < 10:
 			if len(nam) > 0:
-				p = max(coo)
+				p = await max(coo)
 				ret = ret + str(c + 1) + ') <@' + nam[p] + '> - ' + coo[p] + ':cookie:\n'
 				nam.pop(p)
 				coo.pop(p)
@@ -646,19 +731,19 @@ async def on_message(message):
 		await client.delete_message(message)
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'event')  and message.author.id in admin_list:
+	if await strcmp(message.content.lower(), prefix + 'event')  and message.author.id in admin_list:
 		print('---------[command]:!event')
 		is_event = 1
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'reg') and is_event and message.server.id == '243749885294280704':
+	if await strcmp(message.content.lower(), prefix + 'reg') and is_event and message.server.id == '243749885294280704':
 		print('---------[command]:!reg')
 		role = discord.utils.get(message.server.roles, name='Участвует в ивенте')
 		await client.add_roles(message.author, role)
 		await client.send_message(message.channel, '<@' + message.author.id + '>, зарегистрирован.')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'unreg')  and message.author.id in admin_list:
+	if await strcmp(message.content.lower(), prefix + 'unreg')  and message.author.id in admin_list:
 		print('---------[command]:!unreg')
 		is_event = 0
 		role = discord.utils.get(message.server.roles, name='Участвует в ивенте')
@@ -668,13 +753,13 @@ async def on_message(message):
 		await client.send_message(message.channel, 'Роли изъяты.')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'embed'):
+	if await strcmp(message.content.lower(), prefix + 'embed')  and message.author.id in admin_list:
 		em = discord.Embed(title='Крутим пальчиками.', colour=0xC5934B)
 		em.set_image(url='http://i0.kym-cdn.com/photos/images/original/000/448/492/bfa.gif')
 		await client.send_message(message.channel, embed=em)
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'rules')  and message.author.id in admin_list:
+	if await strcmp(message.content.lower(), prefix + 'rules')  and message.author.id in admin_list:
 		f = open('rules','r')
 		ret = 0
 		line = f.readline()
@@ -713,10 +798,10 @@ async def on_message(message):
 					c = c + 1
 				f.close()
 		else:
-			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет:cookie: :(')
+			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет :cookie: :(')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content, prefix + 'fs'):
+	if await strcmp(message.content, prefix + 'fs'):
 		print('---------[command]:!fs')
 		if message.author.id in names:
 			c = 0
@@ -736,7 +821,7 @@ async def on_message(message):
 					c = c + 1
 				f.close()
 		else:
-			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет:cookie: :(')
+			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет :cookie: :(')
 		await client.delete_message(message)
 
 
@@ -748,7 +833,67 @@ async def on_message(message):
 #        await client.edit_message(msg,'Извени но я вырезала твой мат')
 
 
-def max(list):
+async def updates():
+	channel_list = []
+	f = open('channel_list', 'r')
+	line1 = f.readline()
+	line2 = f.readline()
+	c = 0
+	while line1:
+		channel_list.append(line1)
+		channel_list.append(line2)
+		line1 = f.readline()
+		line2 = str(f.readline())
+		print(str((c // 2) + 1) + ')' + channel_list[c][:-1] + ' ' + channel_list[c + 1][:-1])
+		c = c + 2
+	f.close()
+
+	print('------')
+
+	f = open('daily', 'r')
+	line1 = f.readline()
+	c = 0
+	while line1:
+		daily_id.append(line1[:-1])
+		line1 = f.readline()
+		print(str(c + 1) + ')' + daily_id[c])
+		c = c + 1
+	f.close()
+
+	f = open('cookie', 'r')
+	line1 = f.readline()
+	line2 = f.readline()
+	while line1:
+		names.append(line1[:-1])
+		cookie.append(line2[:-1])
+		line1 = f.readline()
+		line2 = f.readline()
+	f.close()
+
+	f = open('mat', 'r')
+	line1 = f.readline()
+	while line1:
+		mat_list.append(line1[:-1])
+		line1 = f.readline()
+	print('mat_list is ready.')
+	f.close()
+
+	f = open('waifu', 'r')
+	line1 = f.readline()
+	line2 = f.readline()
+	line3 = f.readline()
+	c = 0
+	while line1:
+		waifu_list_own.append(line1[:-1])
+		waifu_list_id.append(line2[:-1])
+		waifu_list_cost.append(line3[:-1])
+		line1 = f.readline()
+		line2 = f.readline()
+		line3 = f.readline()
+		c = c + 3
+	f.close()
+
+async def max(list):
     maximum = 0
     p = 0
     for s in range(len(list)):
@@ -758,7 +903,7 @@ def max(list):
     return p
 
 
-def strcmp(s1, s2):
+async def strcmp(s1, s2):
 	i1 = 0
 	i2 = 0
 	s1 = s1 + '\0'
