@@ -4,8 +4,9 @@ import requests
 import time
 import string
 import random
+import copy
 
-DISCORD_BOT_TOKEN = 'NDM0MjM2MjI2NTczNDM0ODkx.DbIc-w.ufvbmB_MSVQqd7kIHrUFMQxdxnc'
+DISCORD_BOT_TOKEN = 'token'
 
 BTC_PRICE_URL_coinmarketcap = 'https://api.coinmarketcap.com/v1/ticker/bitcoin/?convert=RUB'
 
@@ -14,11 +15,15 @@ client = discord.Client()
 
 save_channel = 0
 admin_list = ['265474107666202634', '282660110545846272']
+bonus_list = ['265474107666202634', '282660110545846272', '175571075931963393']
 admin_channel_list = ['434056729362169857', '433267590937444364', '43568779755939430']
 
-prefix = '!'
+prefix = '>'
 stops = 0
 #lock = 0
+
+event_list = []
+is_event = 0
 
 quiz_channel = 0
 quiz = 0
@@ -86,6 +91,17 @@ quiz_answer = [['врата штейна', 'врата штайнера'],
 
 mat_list = []
 
+kusi_list = ['https://media.discordapp.net/attachments/243749885294280704/436607652349607946/1366009488_kus.gif', 'https://media.discordapp.net/attachments/243749885294280704/436608940290211860/1514641844_1510391300_1483900263_demichanwakataritai-episode1-omake-3.gif']
+stroke_list = ['https://pa1.narvii.com/6564/b84e81eb41fdcb8f4d09580010d0129f844ef2e1_hq.gif',
+            'https://pa1.narvii.com/6409/09635809b718249a519f67ebe6767e838136c4e9_hq.gif',
+            'https://i.imgur.com/nCp9C6y.gif']
+crazy_list = ['https://49.media.tumblr.com/c0a3938a185e4edbc5b6fa4df344b5e1/tumblr_n7otvic0AI1qckkfko1_r2_500.gif']
+fs_list = ['https://i.pinimg.com/originals/47/55/39/475539cfe4876c876c91ffbc0a962d4a.gif',
+            'http://i0.kym-cdn.com/photos/images/original/000/448/492/bfa.gif',
+            'http://cs.pikabu.ru/images/big_size_comm/2012-12_2/13549741925392.gif',
+            'http://i0.kym-cdn.com/photos/images/original/000/448/521/e2c.gif',
+            'http://i0.kym-cdn.com/photos/images/newsfeed/000/809/458/237.gif',
+            'https://media.giphy.com/media/BFUcrw8V2WnyU/giphy.gif']
 #------------------------------------------------------------------------------------------------------------------------------
 #         Economics
 #------------------------------------------------------------------------------------------------------------------------------
@@ -159,6 +175,37 @@ async def daily_cookie():
 
 client.loop.create_task(daily_cookie())
 
+#async def presences():
+#	await client.wait_until_ready()
+#	while not client.is_closed:
+#		await client.change_presence(game=discord.Game(name='Здесь'))
+#		await asyncio.sleep(1)
+#		await client.change_presence(game=discord.Game(name='могла быть'))
+#		await asyncio.sleep(1)
+#		await client.change_presence(game=discord.Game(name='ваша реклама!'))
+#		await asyncio.sleep(1)
+#
+#client.loop.create_task(presences())
+
+@client.event
+async def on_member_join(member):
+	print('---------[command]:' + str(member) + 'join')
+	role = discord.utils.get(member.server.roles, id='423111586832580608')
+	await client.add_roles(member, role)
+	c = random.randint(1, 2)
+	if c == 1:
+		await client.send_message(client.get_channel('432948785216225281'), 'Добро пожаловать, ' + member.mention + ', мы тебя очень ждали! :kannabear:')
+	if c == 2:
+		await client.send_message(client.get_channel('432948785216225281'), 'Приветствую ' + member.mention + ', мой дорогой друг. Располагайся по-уютнее. ╰(´︶`)╯♡')
+
+@client.event
+async def on_member_remove(member):
+	print('---------[command]:' + str(member) + 'leave')
+	c = random.randint(1, 2)
+	if c == 1:
+		await client.send_message(client.get_channel('432948785216225281'), 'Прощай, ' + member.mention + ', будем ждать тебя в гости снова! :BibleRem:')
+	if c == 2:
+		await client.send_message(client.get_channel('432948785216225281'), member.mention + ', ушёл красиво, по-английски.')
 
 @client.event
 async def on_ready():
@@ -166,12 +213,15 @@ async def on_ready():
 	print(client.user.name)
 	print(client.user.id)
 	print('------')
-	await client.change_presence(game=discord.Game(name='My Code Is Dead'))
+	await client.change_presence(game=discord.Game(name='самого крутого бота'))
 
 @client.event
 async def on_message(message):
 
-	print('<' + message.channel.name+ '>'+ '[' + message.author.name + '|' + message.author.id + ']' + message.content)
+	#server = discord.Server()
+
+	#print('<' + message.channel.name + '>' + '[' + message.author.name + '|' + message.author.id + ']' + message.content)
+	print('<' + message.server.id + '>' + '[' + message.author.name + '|' + message.author.id + ']' + message.content)
 
 	global stops
 	global save_channel
@@ -187,6 +237,9 @@ async def on_message(message):
 	global cookie
 	global names
 	global report
+	global is_event
+	global bonus_list
+	global kusi_list
 
 	if message.content.startswith(prefix + 'btcprice'):
 		print('---------[command]: btcprice ')
@@ -215,7 +268,7 @@ async def on_message(message):
 	#    await client.send_message(message.channel, ':sparkles::regional_indicator_s: :regional_indicator_o: :regional_indicator_y: :regional_indicator_a:      :regional_indicator_j: :regional_indicator_o: :regional_indicator_n: :regional_indicator_e: :regional_indicator_s::sparkles:')
 	#    #await client.delete_message(message)
 
-	if message.content.startswith(prefix + 'ddos'):
+	if message.content.startswith(prefix + 'ddos') and message.author.id in admin_list:
 		if message.author.id in admin_list:
 			print('---------[command]:!ddos ' + message.content[6:])
 			#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!ddos ' + message.content[6:] + '\n```')
@@ -240,6 +293,11 @@ async def on_message(message):
 		print('---------[command]:!cookie')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!cookie\n```')
 		await client.send_message(message.channel, "О, я тоже хочу, поделитесь?:cookie:")
+
+	if strcmp(message.content, prefix + 'ping'):
+		print('---------[command]:!ping')
+		await client.send_message(message.channel, ':sparkles:Туточки:sparkles:')
+		await client.delete_message(message)
 
 	if strcmp(message.content, prefix + 'hi'):
 		print('---------[command]:!hi')
@@ -268,15 +326,20 @@ async def on_message(message):
 												   prefix + 'cookie / ' + prefix +'me - Узнать свой баланс печенюх.\n' +
 												   prefix + 'roll <ставка> - Поставить печенюхи на рулетке.\n' +
 												   prefix + 'give <кому> <сколько> - Поделиться печенюхами с другом.\n' +
-												   prefix + 'rang - Посмотреть на обжор.\n\n' +
+												   prefix + 'rank - Посмотреть на обжор.\n\n' +
+												   '<Events>\n' +
+												   prefix + 'reg - Регистрация для участия в ивентах. Выдает соответствующую роль.\n\n' +
 												   '<Fun>\n' +
-												   'Печенюха/печенька - Попросит вкуснях. Это две команды. Буквы могут быть любого размера.\nПишется без префикса.\n' +
-												   'Меншн Сони выдаст интересный набор смайликов))). Но не стоит слишком часто юзать эту функцию.\nГрозит перманентным баном по айди на доступ к этой команде.\n' +
+												   #'Печенюха/печенька - Попросит вкуснях. Это две команды. Буквы могут быть любого размера.\nПишется без префикса.\n' +
+												   #'Меншн Сони выдаст интересный набор смайликов))). Но не стоит слишком часто юзать эту функцию.\nГрозит перманентным баном по айди на доступ к этой команде.\n' +
 												   prefix + 'say <текст> - Напишет ваше сообщение.\n' +
+												   prefix + 'stroke <кого> - Погладить кого-то. [20 печенюх]\n' +
+												   prefix + 'fs - Покрутить пальчиками. [15 печенюх]\n' +
 												   prefix + 'hi - Поприветствует всех от вашего имени.\n' +
 												   prefix + 'gm - Охайё, т.е доброе утро)).\n\n' +
 												   '<Help>\n' +
 												   prefix + 'help - Вызов этой справки.\n' +
+												   prefix + 'ping - Сомневаешься в том, что он жив???\n' +
 												   prefix + 'report <текст> - Отправить сообщение разработчику. Баги, пожелания, предложения руки и сердца кидать сюда-ня.\n' +
 												   '```')
 		await client.delete_message(message)
@@ -310,9 +373,15 @@ async def on_message(message):
 		await client.send_message(message.channel, message.content[5:])
 		await client.delete_message(message)
 
+	if message.content.startswith(prefix + 'says ') and message.author.id in admin_list:
+		print('---------[command]:!say')
+		em = discord.Embed(description=message.content[6:], colour=0xC5934B)
+		await client.send_message(message.channel, embed=em)
+		await client.delete_message(message)
+
 	if message.content.startswith(prefix + 'report '):
 		print('---------[command]:!report')
-		await client.send_message(report, '<' + message.author.name + '|' + message.author.id+ '>'+ ' ' + message.content[8:])
+		await client.send_message(discord.utils.get(message.server.members, id='282660110545846272'), '<' + message.author.name + '|' + message.author.id+ '>'+ ' ' + message.content[8:])
 		await client.delete_message(message)
 
 	if message.content.startswith(prefix + 'sayhim') and message.author.id in admin_list:
@@ -472,7 +541,10 @@ async def on_message(message):
 			if (int(message.content[6:]) > int(cookie[c])):
 				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя нет столько:cookie: :(')
 			else:
-				if (random.randint(0, 100) + 7) > 50:
+				bonus = 0
+				if message.author.id in bonus_list:
+					bonus = 30
+				if (random.randint(0, 100) + bonus) > 50:
 				#if (random.random() == 1):
 					cookie[c] = str(int(cookie[c]) + int(message.content[6:]))
 					f = open('cookie', 'w')
@@ -542,29 +614,129 @@ async def on_message(message):
 			await client.send_message(message.channel, 'Нет такого пользователя :(')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if strcmp(message.content.lower(), prefix + 'rang'):
-		print('---------[command]:!rang')
-		nam = names
-		coo = cookie
+	if strcmp(message.content.lower(), prefix + 'rank'):
+		print('---------[command]:!rank')
+		f = open('cookie', 'r')
+		line1 = f.readline()
+		line2 = f.readline()
+		nam = []
+		coo = []
+		while line1:
+			nam.append(line1[:-1])
+			coo.append(line2[:-1])
+			line1 = f.readline()
+			line2 = f.readline()
+		f.close()
 		c = 0
 		p = 0
-		ret = 'Leaderboards:\n'	
+		ret = '\n'	
 		while c < 10:
 			if len(nam) > 0:
-				p = max(cookie)
-				ret = ret + str(c + 1) + ') <@' + nam.pop(p) + '> - ' + coo.pop(p) + ':cookie:\n'
+				p = max(coo)
+				ret = ret + str(c + 1) + ') <@' + nam[p] + '> - ' + coo[p] + ':cookie:\n'
+				nam.pop(p)
+				coo.pop(p)
 			else:
 				break
 			c = c + 1
-		em = discord.Embed(description=ret, colour=0xC5934B)
+		nam = []
+		coo = []
+		em = discord.Embed(title='Leaderboards:', description=ret, colour=0xC5934B)
 		await client.send_message(message.channel, embed=em)
 		await client.delete_message(message)
 
-
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if strcmp(message.content.lower(), prefix + 'event')  and message.author.id in admin_list:
+		print('---------[command]:!event')
+		is_event = 1
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if strcmp(message.content.lower(), prefix + 'reg') and is_event and message.server.id == '243749885294280704':
+		print('---------[command]:!reg')
+		role = discord.utils.get(message.server.roles, name='Участвует в ивенте')
+		await client.add_roles(message.author, role)
+		await client.send_message(message.channel, '<@' + message.author.id + '>, зарегистрирован.')
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if strcmp(message.content.lower(), prefix + 'unreg')  and message.author.id in admin_list:
+		print('---------[command]:!unreg')
+		is_event = 0
+		role = discord.utils.get(message.server.roles, name='Участвует в ивенте')
+		for s in message.server.members:
+			if role in s.roles:
+				await client.remove_roles(s, role)
+		await client.send_message(message.channel, 'Роли изъяты.')
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
 	if strcmp(message.content.lower(), prefix + 'embed'):
 		em = discord.Embed(title='Крутим пальчиками.', colour=0xC5934B)
 		em.set_image(url='http://i0.kym-cdn.com/photos/images/original/000/448/492/bfa.gif')
 		await client.send_message(message.channel, embed=em)
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if strcmp(message.content.lower(), prefix + 'rules')  and message.author.id in admin_list:
+		f = open('rules','r')
+		ret = 0
+		line = f.readline()
+		ret = line
+		while line:
+			line = f.readline()
+			ret = ret + line
+		f.close()
+		em = discord.Embed(description=ret, colour=0xC5934B)
+		await client.send_message(message.channel, embed=em)
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if (message.content.startswith('кусь ') or message.content.startswith('Кусь '))  and message.author.id == '344359878153994241':
+		em = discord.Embed(description=message.author.name + ' делает кусь ' + message.content[5:], colour=0xC5934B)	
+		em.set_image(url=random.choice(kusi_list))
+		await client.send_message(message.channel, embed=em)
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if message.content.startswith(prefix + 'stroke '):
+		print('---------[command]:!stroke')
+		if message.author.id in names:
+			c = 0
+			while(names[c] != message.author.id):
+				c = c + 1
+			if (20 > int(cookie[c])):
+				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя недостаточно:cookie: :(')
+			else:
+				em = discord.Embed(description=message.author.name + ' гладит ' + message.content[8:], colour=0xC5934B)
+				em.set_image(url=random.choice(stroke_list))
+				await client.send_message(message.channel, embed=em)
+				cookie[c] = str(int(cookie[c]) - 20)
+				f = open('cookie', 'w')
+				c = 0
+				for s in cookie:
+					f.write(names[c] + '\n' + s + "\n")
+					c = c + 1
+				f.close()
+		else:
+			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет:cookie: :(')
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if strcmp(message.content, prefix + 'fs'):
+		print('---------[command]:!fs')
+		if message.author.id in names:
+			c = 0
+			while(names[c] != message.author.id):
+				c = c + 1
+			if (15 > int(cookie[c])):
+				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя недостаточно:cookie: :(')
+			else:
+				em = discord.Embed(description=message.author.name + ' крутит пальчиками!', colour=0xC5934B)
+				em.set_image(url=random.choice(fs_list))
+				await client.send_message(message.channel, embed=em)
+				cookie[c] = str(int(cookie[c]) - 15)
+				f = open('cookie', 'w')
+				c = 0
+				for s in cookie:
+					f.write(names[c] + '\n' + s + "\n")
+					c = c + 1
+				f.close()
+		else:
+			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет:cookie: :(')
 		await client.delete_message(message)
 
 
