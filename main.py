@@ -6,7 +6,7 @@ import string
 import random
 import copy
 
-DISCORD_BOT_TOKEN = 'token'
+DISCORD_BOT_TOKEN = 'NDM2NjMwMzQyODIxMjE2MjU2.DbqTNQ.9Vb8qC0jSb_22A7E8krA9g8TquU'
 
 BTC_PRICE_URL_coinmarketcap = 'https://api.coinmarketcap.com/v1/ticker/bitcoin/?convert=RUB'
 
