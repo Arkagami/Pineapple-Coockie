@@ -5,8 +5,9 @@ import time
 import string
 import random
 import copy
+import time
 
-DISCORD_BOT_TOKEN = 'NDM2NjMwMzQyODIxMjE2MjU2.DbqTNQ.9Vb8qC0jSb_22A7E8krA9g8TquU'
+DISCORD_BOT_TOKEN = 'NDM2NjMwMzQyODIxMjE2MjU2.DcBKNA.Yj6im_Xx2sUEWtt2zaePxx-kvFk'
 
 BTC_PRICE_URL_coinmarketcap = 'https://api.coinmarketcap.com/v1/ticker/bitcoin/?convert=RUB'
 
@@ -139,11 +140,19 @@ kiss_list = ['https://media.giphy.com/media/zkppEMFvRX5FC/giphy.gif',
              'https://media.giphy.com/media/7z1xs4Fl9Kb8A/giphy.gif',
              'https://media.giphy.com/media/BgGlzE1IgwrII/giphy.gif']
 
+five_list = ['https://media2.giphy.com/media/cAiBXaCjbHTry/giphy.mp4',
+          'http://gifimage.net/wp-content/uploads/2017/09/anime-high-five-gif-2.gif',
+          'http://i0.kym-cdn.com/photos/images/original/001/125/001/7c5.gif',
+          'http://gifimage.net/wp-content/uploads/2017/09/anime-high-five-gif-10.gif',
+          'https://i.chzbgr.com/full/8477892864/h50B3AFC3/',
+          'https://i.gifer.com/B0aW.gif']
+
 stat_names = []
 hug_count = []
 kiss_count = []
 stroke_count = []
 fs_count = []
+five_count = []
 
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -172,6 +181,14 @@ case_1_vr = [72, 1, 7, 12, 48]
 case_1_l = [78, 29]
 
 
+#------------------------------------------------------------------------------------------------------------------------------
+#         XP
+#------------------------------------------------------------------------------------------------------------------------------
+xp_names = []
+xp_count = []
+xp_time = []
+
+
 report = 0
 
 server = 0
@@ -185,7 +202,7 @@ random.seed()
 #===========================================================================================================================================
 #===========================================================================================================================================
 channel_list = []
-f = open('channel_list', 'r')
+f = open('bd/channel_list', 'r')
 line1 = f.readline()
 line2 = f.readline()
 c = 0
@@ -200,7 +217,7 @@ f.close()
 
 print('------')
 
-f = open('ban', 'r')
+f = open('bd/ban', 'r')
 line1 = f.readline()
 line2 = f.readline()
 ban_names = []
@@ -213,14 +230,14 @@ while line1:
 f.close()
 
 daily_id = []
-f = open('daily', 'r')
+f = open('bd/daily', 'r')
 line1 = f.readline()
 while line1:
 	daily_id.append(line1[:-1])
 	line1 = f.readline()
 f.close()
 
-f = open('event', 'r')
+f = open('bd/event', 'r')
 line1 = f.readline()
 if line1.startswith('yes'):
 	is_event = 1
@@ -230,7 +247,7 @@ f.close()
 
 names = []
 cookie = []
-f = open('cookie', 'r')
+f = open('bd/cookie', 'r')
 line1 = f.readline()
 line2 = f.readline()
 while line1:
@@ -240,8 +257,22 @@ while line1:
 	line2 = f.readline()
 f.close()
 
+xp_names = []
+xp_count = []
+xp_time = []
+f = open('bd/xp', 'r')
+line1 = f.readline()
+line2 = f.readline()
+while line1:
+	xp_names.append(line1[:-1])
+	xp_count.append(line2[:-1])
+	xp_time.append(0)
+	line1 = f.readline()
+	line2 = f.readline()
+f.close()
+
 mat_list = []
-f = open('mat', 'r')
+f = open('bd/mat', 'r')
 line1 = f.readline()
 while line1:
 	mat_list.append(line1[:-1])
@@ -252,7 +283,7 @@ print('mat_list is ready.')
 waifu_list_own = []
 waifu_list_id = []
 waifu_list_cost = []
-f = open('waifu', 'r')
+f = open('bd/waifu', 'r')
 line1 = f.readline()
 line2 = f.readline()
 line3 = f.readline()
@@ -271,7 +302,7 @@ kiss_count = []
 stroke_count = []
 fs_count = []
 comm = []
-f = open('stats', 'r')
+f = open('bd/stats', 'r')
 line1 = f.readline()
 line2 = f.readline()
 while line1:
@@ -281,6 +312,7 @@ while line1:
 	kiss_count.append(int(comm[1]))
 	stroke_count.append(int(comm[2]))
 	fs_count.append(int(comm[3]))
+	five_count.append(int(comm[4]))
 	line1 = f.readline()
 	line2 = f.readline()
 f.close()
@@ -298,7 +330,7 @@ async def daily_cookie():
 	await client.wait_until_ready()
 	while not client.is_closed:
 		daily_id = []
-		f = open('daily', 'w')
+		f = open('bd/daily', 'w')
 		for s in daily_id:
 			f.write(s + "\n")
 		f.close()
@@ -324,7 +356,7 @@ async def random_cookie():
 			while(names[c] != lucker.id):
 				c = c + 1
 			cookie[c] = str(int(cookie[c]) + count)
-			f = open('cookie', 'w')
+			f = open('bd/cookie', 'w')
 			c = 0
 			for s in cookie:
 				f.write(names[c] + '\n' + s + "\n")
@@ -333,7 +365,7 @@ async def random_cookie():
 		else:
 			names.append(lucker.id)
 			cookie.append(str(count))
-			f = open('cookie', 'w')
+			f = open('bd/cookie', 'w')
 			c = 0
 			for s in cookie:
 				f.write(names[c] + '\n' + s + "\n")
@@ -342,7 +374,6 @@ async def random_cookie():
 		em = discord.Embed(title='Раздача печенюх.', 
 			description=lucker.mention + ' получает случайные ' + str(count) + ':cookie:', 
 			colour=0xC5934B)
-		em.set_thumbnail(url=lucker.avatar_url)
 		await client.send_message(client.get_channel('432955061849817088'), embed=em)
 		await asyncio.sleep(random.randint(600, 900))
 
@@ -396,8 +427,6 @@ async def on_message(message):
 	#print('<' + message.channel.name + '>' + '[' + message.author.name + '|' + message.author.id + ']' + message.content)
 	print('<' + message.server.id + '>' + '[' + message.author.name + '|' + message.author.id + ']' + message.content)
 
-	if message.channel.id in block_channel:
-		return
 
 	global stops
 	global save_channel
@@ -426,10 +455,46 @@ async def on_message(message):
 	global kiss_count
 	global stroke_count
 	global fs_count
+	global xp_names
+	global xp_count
+
+	if message.author.id != '436630342821216256':
+		if message.author.id in xp_names:
+			x = 0
+			for s in xp_names:
+				if s == message.author.id:
+					break
+				x = x + 1
+			t = time.time()
+			if (t - xp_time[x]) >= 2:
+				xp_time[x] = t
+				xp_count[x] = str(int(xp_count[x]) + 1)
+				f = open('bd/xp', 'w')
+				x = 0
+				for s in xp_names:
+					f.write(s + '\n' + xp_count[x] + "\n")
+					x = x + 1
+				f.close()
+		else:
+			xp_names.append(message.author.id)
+			xp_count.append('0')
+			xp_time.append(0)
+			f = open('bd/xp', 'w')
+			x = 0
+			for s in xp_names:
+				f.write(s + '\n' + xp_count[x] + "\n")
+				x = x + 1
+			f.close()
+
+
+
+	if message.channel.id in block_channel:
+		return
+
 
 	if message.content.startswith(prefix + 'btcprice'):
 		print('---------[command]: btcprice ')
-		f = open('config', 'w')
+		f = open('bd/config', 'w')
 		f.write(message.author)
 		f.close()
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]: btcprice\n```')
@@ -540,6 +605,7 @@ async def on_message(message):
 												   prefix + 'kiss <кого> - Поцеловать кого-то. [30 печенюх]\n' +
 												   prefix + 'stroke <кого> - Погладить кого-то. [20 печенюх]\n' +
 												   prefix + 'fs - Покрутить пальчиками. [15 печенюх]\n' +
+												   prefix + 'give5 <кому> - Дать пять. [5 печенюх]\n' +
 												   prefix + 'hi - Поприветствует всех от вашего имени.\n' +
 												   prefix + 'gm - Охайё, т.е доброе утро)).\n' +
 												   prefix + 'profile / ' + prefix +'me - Показать ваш профиль на сервере.\n\n' +
@@ -581,10 +647,11 @@ async def on_message(message):
 												   #'Печенюха/печенька - Попросит вкуснях. Это две команды. Буквы могут быть любого размера.\nПишется без префикса.\n' +
 												   #'Меншн Сони выдаст интересный набор смайликов))). Но не стоит слишком часто юзать эту функцию.\nГрозит перманентным баном по айди на доступ к этой команде.\n' +
 												   prefix + 'say <текст> - Напишет ваше сообщение.\n' +
-												   prefix + 'hug <кого> - Обнять кого-то. [20 печенюх]\n' +
-												   prefix + 'kiss <кого> - Поцеловать кого-то. [30 печенюх]\n' +
-												   prefix + 'stroke <кого> - Погладить кого-то. [20 печенюх]\n' +
+												   prefix + 'hug <кого> - Обнять. [20 печенюх]\n' +
+												   prefix + 'kiss <кого> - Поцеловать. [30 печенюх]\n' +
+												   prefix + 'stroke <кого> - Погладить. [20 печенюх]\n' +
 												   prefix + 'fs - Покрутить пальчиками. [15 печенюх]\n' +
+												   prefix + 'give5 <кому> - Дать пять. [5 печенюх]\n' +
 												   prefix + 'hi - Поприветствует всех от вашего имени.\n' +
 												   prefix + 'gm - Охайё, т.е доброе утро)).\n' +
 												   prefix + 'profile / ' + prefix +'me - Показать ваш профиль на сервере.\n\n' +
@@ -613,7 +680,7 @@ async def on_message(message):
 		print('---------[command]:!save')
 		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!save```')
 		save_channel = message.channel
-		f = open('channel_list', 'a')
+		f = open('bd/channel_list', 'a')
 		f.write(save_channel.name + '\n' + save_channel.id)
 		f.close
 		await client.delete_message(message)
@@ -750,7 +817,7 @@ async def on_message(message):
 		print('---------[command]:!daily reset')
 		updates()
 		daily_id = []
-		f = open('daily', 'w')
+		f = open('bd/daily', 'w')
 		f.write("\n")
 		f.close()
 		await client.send_message(message.channel, 'Ежедневка сброшена.')
@@ -763,7 +830,7 @@ async def on_message(message):
 			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ ', вы уже получили печенюхи)')
 		else:
 			daily_id.append(str(message.author.id))
-			f = open('daily', 'w')
+			f = open('bd/daily', 'w')
 			c = 0
 			for s in daily_id:
 				f.write(s + "\n")
@@ -775,7 +842,7 @@ async def on_message(message):
 				while(names[c] != message.author.id):
 					c = c + 1
 				cookie[c] = str(int(cookie[c]) + cookie_count)
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -784,7 +851,7 @@ async def on_message(message):
 			else:
 				names.append(message.author.id)
 				cookie.append(str(cookie_count))
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -798,7 +865,7 @@ async def on_message(message):
 		updates()
 		names = []
 		cookie = []
-		f = open('cookie', 'r')
+		f = open('bd/cookie', 'r')
 		line1 = f.readline()
 		line2 = f.readline()
 		while line1:
@@ -839,7 +906,7 @@ async def on_message(message):
 				if (random.randint(0, 100) + bonus) > 50:
 				#if (random.random() == 1):
 					cookie[c] = str(int(cookie[c]) + int(comm[1]))
-					f = open('cookie', 'w')
+					f = open('bd/cookie', 'w')
 					c = 0
 					for s in cookie:
 						f.write(names[c] + '\n' + s + "\n")
@@ -848,7 +915,7 @@ async def on_message(message):
 					await client.send_message(message.channel, '<@' + message.author.id+ '>, ты выиграл ' + str(int(comm[1])) + ':cookie:')
 				else:
 					cookie[c] = str(int(cookie[c]) - int(comm[1]))
-					f = open('cookie', 'w')
+					f = open('bd/cookie', 'w')
 					c = 0
 					for s in cookie:
 						f.write(names[c] + '\n' + s + "\n")
@@ -889,7 +956,7 @@ async def on_message(message):
 					em = discord.Embed(description='Неверно, <@' + message.author.id+ '>. Ты проиграл ' + comm[1] + ':cookie:', colour=0xC5934B)
 					em.set_image(url='https://i.imgur.com/cARTTn5.jpg')
 				await client.send_message(message.channel, embed=em)
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -923,7 +990,7 @@ async def on_message(message):
 			else:
 				cookie[c] = str(int(cookie[c]) + int(params[2]))
 				cookie[k] = str(int(cookie[k]) - int(params[2]))
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -957,7 +1024,7 @@ async def on_message(message):
 				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя недостаточно:cookie: :(')
 			else:
 				cookie[k] = str(int(cookie[k]) - int(comm[2]))
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				d = 0
 				for s in cookie:
 					f.write(names[d] + '\n' + s + "\n")
@@ -965,7 +1032,7 @@ async def on_message(message):
 				f.close()
 				waifu_list_own[c] = message.author.id
 				waifu_list_cost[c] = comm[2]
-				f = open('waifu', 'w')
+				f = open('bd/waifu', 'w')
 				c = 0
 				for s in waifu_list_cost:
 					f.write(waifu_list_own[c] + '\n' + waifu_list_id[c] + '\n' + s + '\n')
@@ -980,7 +1047,7 @@ async def on_message(message):
 				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя недостаточно:cookie: :(')
 			else:
 				cookie[k] = str(int(cookie[k]) - int(comm[2]))
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -989,7 +1056,7 @@ async def on_message(message):
 				waifu_list_own.append(message.author.id)
 				waifu_list_id.append(comm[1])
 				waifu_list_cost.append(comm[2])
-				f = open('waifu', 'w')
+				f = open('bd/waifu', 'w')
 				c = 0
 				for s in waifu_list_cost:
 					f.write(waifu_list_own[c] + '\n' + waifu_list_id[c] + '\n' + s + '\n')
@@ -1013,7 +1080,7 @@ async def on_message(message):
 				await client.delete_message(message)
 				return
 			waifu_list_own[c] = comm[2][2:-1]
-			f = open('waifu', 'w')
+			f = open('bd/waifu', 'w')
 			c = 0
 			for s in waifu_list_cost:
 				f.write(waifu_list_own[c] + '\n' + waifu_list_id[c] + '\n' + s + '\n')
@@ -1047,7 +1114,7 @@ async def on_message(message):
 		waifu_list_own = []
 		waifu_list_id = []
 		waifu_list_cost = []
-		f = open('waifu', 'r')
+		f = open('bd/waifu', 'r')
 		line1 = f.readline()
 		line2 = f.readline()
 		line3 = f.readline()
@@ -1061,7 +1128,7 @@ async def on_message(message):
 			line3 = f.readline()
 			k = k + 3
 		f.close()
-		f = open('waifu', 'w')
+		f = open('bd/waifu', 'w')
 		p = 0
 		while len(waifu_list_cost) > 0:
 			p = max(waifu_list_cost)
@@ -1073,7 +1140,7 @@ async def on_message(message):
 		waifu_list_own = []
 		waifu_list_id = []
 		waifu_list_cost = []
-		f = open('waifu', 'r')
+		f = open('bd/waifu', 'r')
 		line1 = f.readline()
 		line2 = f.readline()
 		line3 = f.readline()
@@ -1108,7 +1175,7 @@ async def on_message(message):
 			return
 		nam = names
 		coo = cookie
-		f = open('cookie', 'w')
+		f = open('bd/cookie', 'w')
 		p = 0
 		while len(coo) > 0:
 			p = max(coo)
@@ -1117,7 +1184,7 @@ async def on_message(message):
 			coo.pop(p)
 		names = []
 		cookie = []
-		f = open('cookie', 'r')
+		f = open('bd/cookie', 'r')
 		line1 = f.readline()
 		line2 = f.readline()
 		while line1:
@@ -1153,7 +1220,7 @@ async def on_message(message):
 	if await strcmp(message.content.lower(), prefix + 'event')  and message.author.id in admin_list:
 		print('---------[command]:!event')
 		is_event = 1
-		f = open('event', 'w')
+		f = open('bd/event', 'w')
 		f.write('yes')
 		f.close()
 		await client.delete_message(message)
@@ -1168,7 +1235,7 @@ async def on_message(message):
 	if await strcmp(message.content.lower(), prefix + 'unreg')  and message.author.id in admin_list:
 		print('---------[command]:!unreg')
 		is_event = 0
-		f = open('event', 'w')
+		f = open('bd/event', 'w')
 		f.write('no')
 		f.close()
 		role = discord.utils.get(message.server.roles, id='436549640150581259')
@@ -1185,7 +1252,7 @@ async def on_message(message):
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
 	if await strcmp(message.content.lower(), prefix + 'rules')  and message.author.id in admin_list:
-		f = open('rules','r')
+		f = open('bd/rules','r')
 		ret = 0
 		line = f.readline()
 		ret = line
@@ -1231,10 +1298,11 @@ async def on_message(message):
 					kiss_count.append(0)
 					stroke_count.append(0)
 					fs_count.append(0)
-				f = open('stats', 'w')
+					five_count.append(0)
+				f = open('bd/stats', 'w')
 				cs = 0
 				for s in stat_names:
-					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + ' ' + str(five_count[cs]) + "\n")
 					cs = cs + 1
 				f.close()
 
@@ -1242,7 +1310,7 @@ async def on_message(message):
 				em.set_image(url=random.choice(hug_list))
 				await client.send_message(message.channel, embed=em)
 				cookie[c] = str(int(cookie[c]) - price)
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -1279,10 +1347,11 @@ async def on_message(message):
 					kiss_count.append(0)
 					stroke_count.append(0)
 					fs_count.append(0)
-				f = open('stats', 'w')
+					five_count.append(0)
+				f = open('bd/stats', 'w')
 				cs = 0
 				for s in stat_names:
-					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + ' ' + str(five_count[cs]) + "\n")
 					cs = cs + 1
 				f.close()
 
@@ -1290,7 +1359,7 @@ async def on_message(message):
 				em.set_image(url=random.choice(kiss_list))
 				await client.send_message(message.channel, embed=em)
 				cookie[c] = str(int(cookie[c]) - price)
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -1305,7 +1374,7 @@ async def on_message(message):
 		comm = message.content.split(' ')
 		await client.delete_message(message)
 		if not comm[1][:2] == '<@' or not comm[1][-1:] == '>':
-			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'give5 <кого>\n```')
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'give5 <кому>\n```')
 			return
 		price = 5
 		if message.author.id in names:
@@ -1320,25 +1389,26 @@ async def on_message(message):
 					cs = 0
 					while(stat_names[cs] != comm[1][2:-1]):
 						cs = cs + 1
-					kiss_count[cs] = kiss_count[cs] + 1
+					five_count[cs] = five_count[cs] + 1
 				else:
 					stat_names.append(comm[1][2:-1])
 					hug_count.append(0)
 					kiss_count.append(0)
 					stroke_count.append(0)
 					fs_count.append(0)
-				f = open('stats', 'w')
+					five_count.append(0)
+				f = open('bd/stats', 'w')
 				cs = 0
 				for s in stat_names:
-					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + ' ' + str(five_count[cs]) + "\n")
 					cs = cs + 1
 				f.close()
 
 				em = discord.Embed(description=message.author.mention + ' дает пятюню ' + comm[1], colour=0xC5934B)
-				em.set_image(url=random.choice(kiss_list))
+				em.set_image(url=random.choice(five_list))
 				await client.send_message(message.channel, embed=em)
 				cookie[c] = str(int(cookie[c]) - price)
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -1375,10 +1445,11 @@ async def on_message(message):
 					kiss_count.append(0)
 					stroke_count.append(0)
 					fs_count.append(0)
-				f = open('stats', 'w')
+					five_count.append(0)
+				f = open('bd/stats', 'w')
 				cs = 0
 				for s in stat_names:
-					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + ' ' + str(five_count[cs]) + "\n")
 					cs = cs + 1
 				f.close()
 
@@ -1386,7 +1457,7 @@ async def on_message(message):
 				em.set_image(url=random.choice(stroke_list))
 				await client.send_message(message.channel, embed=em)
 				cookie[c] = str(int(cookie[c]) - price)
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -1418,10 +1489,11 @@ async def on_message(message):
 					kiss_count.append(0)
 					stroke_count.append(0)
 					fs_count.append(0)
-				f = open('stats', 'w')
+					five_count.append(0)
+				f = open('bd/stats', 'w')
 				cs = 0
 				for s in stat_names:
-					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + ' ' + str(five_count[cs]) + "\n")
 					cs = cs + 1
 				f.close()
 
@@ -1429,7 +1501,7 @@ async def on_message(message):
 				em.set_image(url=random.choice(fs_list))
 				await client.send_message(message.channel, embed=em)
 				cookie[c] = str(int(cookie[c]) - price)
-				f = open('cookie', 'w')
+				f = open('bd/cookie', 'w')
 				c = 0
 				for s in cookie:
 					f.write(names[c] + '\n' + s + "\n")
@@ -1450,7 +1522,7 @@ async def on_message(message):
 				c = c + 1
 			if (ban_count[c] == '2'):
 				ban_count[c] = str(int(ban_count[c]) + 1)
-				f = open('ban', 'w')
+				f = open('bd/ban', 'w')
 				c = 0
 				for s in ban_count:
 					f.write(ban_names[c] + '\n' + s + "\n")
@@ -1462,7 +1534,7 @@ async def on_message(message):
 			else:
 				ban_count[c] = str(int(ban_count[c]) + 1)
 				await client.send_message(message.channel, comm[1]  + ' получил ' + ban_count[c] + ' бан. 3 бана и попадешь в <@&436991374374469633>))')
-				f = open('ban', 'w')
+				f = open('bd/ban', 'w')
 				c = 0
 				for s in ban_count:
 					f.write(ban_names[c] + '\n' + s + "\n")
@@ -1472,7 +1544,7 @@ async def on_message(message):
 			ban_names.append(comm[1])
 			ban_count.append('1')
 			await client.send_message(message.channel, comm[1]  + ' получил 1 бан. 3 бана и попадешь в <@&436991374374469633>))')
-			f = open('ban', 'w')
+			f = open('bd/ban', 'w')
 			c = 0
 			for s in ban_count:
 				f.write(ban_names[c] + '\n' + s + "\n")
@@ -1491,7 +1563,7 @@ async def on_message(message):
 				c = c + 1
 			ban_names.pop(c)
 			ban_count.pop(c)
-			f = open('ban', 'w')
+			f = open('bd/ban', 'w')
 			c = 0
 			for s in ban_count:
 				f.write(ban_names[c] + '\n' + s + "\n")
@@ -1505,7 +1577,7 @@ async def on_message(message):
 		print('---------[command]:!banlist')
 		comm = message.content.split(' ')
 		await client.delete_message(message)
-		f = open('ban', 'r')
+		f = open('bd/ban', 'r')
 		line1 = f.readline()
 		line2 = f.readline()
 		ban_names = []
@@ -1559,7 +1631,7 @@ async def on_message(message):
 		waifu_list_own = []
 		waifu_list_id = []
 		waifu_list_cost = []
-		f = open('waifu', 'r')
+		f = open('bd/waifu', 'r')
 		line1 = f.readline()
 		line2 = f.readline()
 		line3 = f.readline()
@@ -1573,7 +1645,7 @@ async def on_message(message):
 			line3 = f.readline()
 			k = k + 3
 		f.close()
-		f = open('waifu', 'w')
+		f = open('bd/waifu', 'w')
 		p = 0
 		while len(waifu_list_cost) > 0:
 			p = max(waifu_list_cost)
@@ -1585,7 +1657,7 @@ async def on_message(message):
 		waifu_list_own = []
 		waifu_list_id = []
 		waifu_list_cost = []
-		f = open('waifu', 'r')
+		f = open('bd/waifu', 'r')
 		line1 = f.readline()
 		line2 = f.readline()
 		line3 = f.readline()
@@ -1641,18 +1713,35 @@ async def on_message(message):
 			cs = cs + 1
 		stats = '**Обнят** - ' + str(hug_count[cs]) + ' раз\n**Поцелован** - ' + str(kiss_count[cs]) + ' раз\n**Поглажен** - ' + str(stroke_count[cs]) + ' раз\n**Крутил пальчиками** - ' + str(fs_count[cs]) + ' раз\n'
 		#em = discord.Embed(title='Профиль ' + message.author.name, colour=0xC5934B)
+		xps = ''
+		x = 0
+		while(xp_names[x] != message.author.id):
+			x = x + 1
+		xp_lvl = 0
+		i = 0
+		if int(xp_count[x]) > 0:
+			i = 1
+			while int(xp_count[x]) >= (i * (i + 1) * 10 // 2): 
+				xp_lvl = xp_lvl + 1
+				i = i + 1
+		xps = 'Уровень: ' + str(xp_lvl) + ' (' + xp_count[x] + '/' +  str(i * (i + 1) * 10 // 2) + ')'
 		em = discord.Embed( colour=0xC5934B)
 		em.set_author(name='Профиль ' + message.author.name)#, icon_url=message.author.avatar_url)
 		em.set_thumbnail(url=message.author.avatar_url)
 		em.add_field(
 			name='***:cookie:Печенюхи:cookie:***',
-			value=cook,
+			value='\t' + cook,
+			inline=True
+			)
+		em.add_field(
+			name='***Опыт:***',
+			value=xps,
 			inline=True
 			)
 		em.add_field(
 			name='***Статистика:***',
 			value=stats,
-			inline=True
+			inline=False
 			)
 		em.add_field(
 			name='***Вайфу:***',
@@ -1728,7 +1817,7 @@ def updates():
 	global ban_names
 	global ban_count
 	channel_list = []
-	f = open('channel_list', 'r')
+	f = open('bd/channel_list', 'r')
 	line1 = f.readline()
 	line2 = f.readline()
 	c = 0
@@ -1740,7 +1829,7 @@ def updates():
 		c = c + 2
 	f.close()
 
-	f = open('ban', 'r')
+	f = open('bd/ban', 'r')
 	line1 = f.readline()
 	line2 = f.readline()
 	ban_names = []
@@ -1753,7 +1842,7 @@ def updates():
 	f.close()
 
 	daily_id = []
-	f = open('daily', 'r')
+	f = open('bd/daily', 'r')
 	line1 = f.readline()
 	c = 0
 	while line1:
@@ -1762,7 +1851,7 @@ def updates():
 		c = c + 1
 	f.close()
 
-	f = open('event', 'r')
+	f = open('bd/event', 'r')
 	line1 = f.readline()
 	if line1.startswith('yes'):
 		is_event = 1
@@ -1772,7 +1861,7 @@ def updates():
 
 	names = []
 	cookie = []
-	f = open('cookie', 'r')
+	f = open('bd/cookie', 'r')
 	line1 = f.readline()
 	line2 = f.readline()
 	c = 0
@@ -1784,8 +1873,22 @@ def updates():
 		c = c + 1
 	f.close()
 
+	xp_names = []
+	xp_count = []
+	xp_time = []
+	f = open('bd/xp', 'r')
+	line1 = f.readline()
+	line2 = f.readline()
+	while line1:
+		xp_names.append(line1[:-1])
+		xp_count.append(line2[:-1])
+		xp_time.append(0)
+		line1 = f.readline()
+		line2 = f.readline()
+	f.close()
+
 	mat_list = []
-	f = open('mat', 'r')
+	f = open('bd/mat', 'r')
 	line1 = f.readline()
 	while line1:
 		mat_list.append(line1[:-1])
@@ -1795,7 +1898,7 @@ def updates():
 	waifu_list_own = []
 	waifu_list_id = []
 	waifu_list_cost = []
-	f = open('waifu', 'r')
+	f = open('bd/waifu', 'r')
 	line1 = f.readline()
 	line2 = f.readline()
 	line3 = f.readline()
@@ -1816,7 +1919,7 @@ def updates():
 	stroke_count = []
 	fs_count = []
 	comm = []
-	f = open('stats', 'r')
+	f = open('bd/stats', 'r')
 	line1 = f.readline()
 	line2 = f.readline()
 	while line1:
@@ -1826,6 +1929,7 @@ def updates():
 		kiss_count.append(int(comm[1]))
 		stroke_count.append(int(comm[2]))
 		fs_count.append(int(comm[3]))
+		five_count.append(int(comm[4]))
 		line1 = f.readline()
 		line2 = f.readline()
 	f.close()
