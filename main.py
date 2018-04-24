@@ -346,7 +346,7 @@ async def random_cookie():
 		await client.send_message(client.get_channel('432955061849817088'), embed=em)
 		await asyncio.sleep(random.randint(600, 900))
 
-#client.loop.create_task(random_cookie())
+client.loop.create_task(random_cookie())
 
 #async def presences():
 #	await client.wait_until_ready()
@@ -453,6 +453,13 @@ async def on_message(message):
 	#    #await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:mention soya\n```')
 	#    await client.send_message(message.channel, ':sparkles::regional_indicator_s: :regional_indicator_o: :regional_indicator_y: :regional_indicator_a:      :regional_indicator_j: :regional_indicator_o: :regional_indicator_n: :regional_indicator_e: :regional_indicator_s::sparkles:')
 	#    #await client.delete_message(message)
+
+	if '<@265474107666202634>' in message.content:
+	    print('---------[command]:mention shift')
+	    em = discord.Embed(description='Господи, опять эти люди меня зовут!', colour=0xC5934B)
+	    em.set_author(name=discord.utils.get(message.server.members, id='265474107666202634').name, icon_url=discord.utils.get(message.server.members, id='265474107666202634').avatar_url)
+	    em.set_image(url='https://images-ext-2.discordapp.net/external/M6hvXKJWWIz9b24UZyzWZjsk4HdOIJsS2WShbWIjnsE/https/99px.ru/sstorage/86/2015/06/image_860106151330438310765.gif')
+	    await client.send_message(message.channel, embed=em)
 
 	if message.content.startswith(prefix + 'ddos') and message.author.id in admin_list:
 		if message.author.id in admin_list:
@@ -1202,7 +1209,7 @@ async def on_message(message):
 		comm = message.content.split(' ')
 		await client.delete_message(message)
 		if not comm[1][:2] == '<@' or not comm[1][-1:] == '>':
-			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'stroke <кого>\n```')
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'hug <кого>\n```')
 			return
 		price = 20
 		if message.author.id in names:
@@ -1250,7 +1257,7 @@ async def on_message(message):
 		comm = message.content.split(' ')
 		await client.delete_message(message)
 		if not comm[1][:2] == '<@' or not comm[1][-1:] == '>':
-			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'stroke <кого>\n```')
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'kiss <кого>\n```')
 			return
 		price = 30
 		if message.author.id in names:
@@ -1280,6 +1287,54 @@ async def on_message(message):
 				f.close()
 
 				em = discord.Embed(description=message.author.mention + ' целует ' + comm[1], colour=0xC5934B)
+				em.set_image(url=random.choice(kiss_list))
+				await client.send_message(message.channel, embed=em)
+				cookie[c] = str(int(cookie[c]) - price)
+				f = open('cookie', 'w')
+				c = 0
+				for s in cookie:
+					f.write(names[c] + '\n' + s + "\n")
+					c = c + 1
+				f.close()
+		else:
+			await client.send_message(message.channel, message.author.mention + ', у тебя нет :cookie: :(')
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if message.content.startswith(prefix + 'give5 '):
+		print('---------[command]:!give5')
+		comm = message.content.split(' ')
+		await client.delete_message(message)
+		if not comm[1][:2] == '<@' or not comm[1][-1:] == '>':
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'give5 <кого>\n```')
+			return
+		price = 5
+		if message.author.id in names:
+			c = 0
+			while(names[c] != message.author.id):
+				c = c + 1
+			if (price > int(cookie[c])):
+				await client.send_message(message.channel, message.author.mention + ', у тебя недостаточно:cookie: :(')
+			else:
+
+				if comm[1][2:-1] in stat_names:
+					cs = 0
+					while(stat_names[cs] != comm[1][2:-1]):
+						cs = cs + 1
+					kiss_count[cs] = kiss_count[cs] + 1
+				else:
+					stat_names.append(comm[1][2:-1])
+					hug_count.append(0)
+					kiss_count.append(0)
+					stroke_count.append(0)
+					fs_count.append(0)
+				f = open('stats', 'w')
+				cs = 0
+				for s in stat_names:
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					cs = cs + 1
+				f.close()
+
+				em = discord.Embed(description=message.author.mention + ' дает пятюню ' + comm[1], colour=0xC5934B)
 				em.set_image(url=random.choice(kiss_list))
 				await client.send_message(message.channel, embed=em)
 				cookie[c] = str(int(cookie[c]) - price)
