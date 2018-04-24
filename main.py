@@ -6,7 +6,7 @@ import string
 import random
 import copy
 
-DISCORD_BOT_TOKEN = 'token'
+DISCORD_BOT_TOKEN = 'NDM2NjMwMzQyODIxMjE2MjU2.DbqTNQ.9Vb8qC0jSb_22A7E8krA9g8TquU'
 
 BTC_PRICE_URL_coinmarketcap = 'https://api.coinmarketcap.com/v1/ticker/bitcoin/?convert=RUB'
 
@@ -14,9 +14,10 @@ client = discord.Client()
 #http = discord.http
 
 save_channel = 0
-admin_list = ['265474107666202634', '282660110545846272', '175571075931963393']
+admin_list = ['265474107666202634', '282660110545846272', '175571075931963393', '432879426066317322']
 bonus_list = ['265474107666202634', '282660110545846272', '175571075931963393']
 admin_channel_list = ['434056729362169857', '433267590937444364', '43568779755939430']
+block_channel = ['243749885294280704', '437747709856972800']
 
 prefix = '>'
 stops = 0
@@ -99,17 +100,50 @@ quiz_answer = [['врата штейна', 'врата штайнера'],
 #------------------------------------------------------------------------------------------------------------------------------
 #         Fun
 #------------------------------------------------------------------------------------------------------------------------------
-kusi_list = ['https://media.discordapp.net/attachments/243749885294280704/436607652349607946/1366009488_kus.gif', 'https://media.discordapp.net/attachments/243749885294280704/436608940290211860/1514641844_1510391300_1483900263_demichanwakataritai-episode1-omake-3.gif']
+kusi_list = ['https://media.discordapp.net/attachments/243749885294280704/436607652349607946/1366009488_kus.gif',
+			 'https://media.discordapp.net/attachments/243749885294280704/436608940290211860/1514641844_1510391300_1483900263_demichanwakataritai-episode1-omake-3.gif']
+
 stroke_list = ['https://pa1.narvii.com/6564/b84e81eb41fdcb8f4d09580010d0129f844ef2e1_hq.gif',
-            'https://pa1.narvii.com/6409/09635809b718249a519f67ebe6767e838136c4e9_hq.gif',
-            'https://i.imgur.com/nCp9C6y.gif']
+               'https://pa1.narvii.com/6409/09635809b718249a519f67ebe6767e838136c4e9_hq.gif',
+               'https://i.imgur.com/nCp9C6y.gif',
+          	   'https://67.media.tumblr.com/8350c725f64bd33e6c11f83dfc0b30c1/tumblr_o5hajrbK6W1uzwbyjo1_500.gif',
+          	   'https://i.warosu.org/data/tg/img/0325/75/1401948598533.gif',
+          	   'https://data.whicdn.com/images/128044722/original.gif']
+
 crazy_list = ['https://49.media.tumblr.com/c0a3938a185e4edbc5b6fa4df344b5e1/tumblr_n7otvic0AI1qckkfko1_r2_500.gif']
+
 fs_list = ['https://i.pinimg.com/originals/47/55/39/475539cfe4876c876c91ffbc0a962d4a.gif',
-            'http://i0.kym-cdn.com/photos/images/original/000/448/492/bfa.gif',
-            'http://cs.pikabu.ru/images/big_size_comm/2012-12_2/13549741925392.gif',
-            'http://i0.kym-cdn.com/photos/images/original/000/448/521/e2c.gif',
-            'http://i0.kym-cdn.com/photos/images/newsfeed/000/809/458/237.gif',
-            'https://media.giphy.com/media/BFUcrw8V2WnyU/giphy.gif']
+           'http://i0.kym-cdn.com/photos/images/original/000/448/492/bfa.gif',
+           'http://cs.pikabu.ru/images/big_size_comm/2012-12_2/13549741925392.gif',
+           'http://i0.kym-cdn.com/photos/images/original/000/448/521/e2c.gif',
+           'http://i0.kym-cdn.com/photos/images/newsfeed/000/809/458/237.gif',
+           'https://media.giphy.com/media/BFUcrw8V2WnyU/giphy.gif']
+
+hug_list = ['https://pa1.narvii.com/6503/94396ca275c5d06113f9a03d1e86b900ad23c022_hq.gif',
+           'https://media.giphy.com/media/TGVd8DUOggMiA/giphy.gif',
+           'http://animegif.ru/up/photos/album/jan18/180102_8536.gif',
+           'http://animechan.ru/uploads/posts/2015-09/1443014358_anime-anime-gif-jitsu-wa-watashi-wa-kuromine-asahi-2447653.gif',
+           'https://media.giphy.com/media/ZQN9jsRWp1M76/giphy.gif',
+           'https://media.giphy.com/media/s31WaGPAmTP1e/giphy.gif',
+           'https://media.giphy.com/media/kvKFM3UWg2P04/giphy.gif',
+           'https://media.giphy.com/media/ZRI1k4BNvKX1S/giphy.gif']
+
+kiss_list = ['https://media.giphy.com/media/zkppEMFvRX5FC/giphy.gif',
+             'https://media.giphy.com/media/bGm9FuBCGg4SY/giphy.gif',
+             'https://media.giphy.com/media/FqBTvSNjNzeZG/giphy.gif',
+             'https://media.giphy.com/media/Ka2NAhphLdqXC/giphy.gif',
+             'https://media.giphy.com/media/12VXIxKaIEarL2/giphy.gif',
+             'https://media.giphy.com/media/flmwfIpFVrSKI/giphy.gif',
+             'https://media.giphy.com/media/QGc8RgRvMonFm/giphy.gif',
+             'https://media.giphy.com/media/JynbO9pnGxPrO/giphy.gif',
+             'https://media.giphy.com/media/7z1xs4Fl9Kb8A/giphy.gif',
+             'https://media.giphy.com/media/BgGlzE1IgwrII/giphy.gif']
+
+stat_names = []
+hug_count = []
+kiss_count = []
+stroke_count = []
+fs_count = []
 
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -140,13 +174,16 @@ case_1_l = [78, 29]
 
 report = 0
 
-channel_list = []
-
 server = 0
 
 random.seed()
 
 
+#===========================================================================================================================================
+#===========================================================================================================================================
+#===========================================================================================================================================
+#===========================================================================================================================================
+#===========================================================================================================================================
 channel_list = []
 f = open('channel_list', 'r')
 line1 = f.readline()
@@ -156,8 +193,8 @@ while line1:
 	channel_list.append(line1[:-1])
 	channel_list.append(line2[:-1])
 	line1 = f.readline()
-	line2 = str(f.readline())
-	print(str((c // 2) + 1) + ')' + channel_list[c][:-1] + ' ' + channel_list[c + 1][:-1])
+	line2 = f.readline()
+	print(str((c // 2) + 1) + ')' + channel_list[c] + ' ' + channel_list[c + 1])
 	c = c + 2
 f.close()
 
@@ -178,12 +215,17 @@ f.close()
 daily_id = []
 f = open('daily', 'r')
 line1 = f.readline()
-c = 0
 while line1:
 	daily_id.append(line1[:-1])
 	line1 = f.readline()
-	print(str(c + 1) + ')' + daily_id[c])
-	c = c + 1
+f.close()
+
+f = open('event', 'r')
+line1 = f.readline()
+if line1.startswith('yes'):
+	is_event = 1
+else:
+	is_event = 0
 f.close()
 
 names = []
@@ -204,8 +246,8 @@ line1 = f.readline()
 while line1:
 	mat_list.append(line1[:-1])
 	line1 = f.readline()
-print('mat_list is ready.')
 f.close()
+print('mat_list is ready.')
 
 waifu_list_own = []
 waifu_list_id = []
@@ -214,7 +256,6 @@ f = open('waifu', 'r')
 line1 = f.readline()
 line2 = f.readline()
 line3 = f.readline()
-c = 0
 while line1:
 	waifu_list_own.append(line1[:-1])
 	waifu_list_id.append(line2[:-1])
@@ -222,10 +263,35 @@ while line1:
 	line1 = f.readline()
 	line2 = f.readline()
 	line3 = f.readline()
-	c = c + 3
+f.close()
+
+stat_names = []
+hug_count = []
+kiss_count = []
+stroke_count = []
+fs_count = []
+comm = []
+f = open('stats', 'r')
+line1 = f.readline()
+line2 = f.readline()
+while line1:
+	stat_names.append(line1[:-1])
+	comm = line2[:-1].split(' ')
+	hug_count.append(int(comm[0]))
+	kiss_count.append(int(comm[1]))
+	stroke_count.append(int(comm[2]))
+	fs_count.append(int(comm[3]))
+	line1 = f.readline()
+	line2 = f.readline()
 f.close()
 
 print('------')
+#===========================================================================================================================================
+#===========================================================================================================================================
+#===========================================================================================================================================
+#===========================================================================================================================================
+#===========================================================================================================================================
+
 
 async def daily_cookie():
 	global daily_id
@@ -249,6 +315,8 @@ async def random_cookie():
 		for s in client.get_server('243749885294280704').members:
 			memb.append(s)
 		lucker = memb[random.randint(1, len(memb)) - 1]
+		while lucker.bot:
+			lucker = memb[random.randint(1, len(memb)) - 1]
 		print('---------[command]:random_cookie ' + lucker.name + ' ' + lucker.id)
 		count = random.randint(2, 20)
 		if lucker.id in names:
@@ -271,11 +339,14 @@ async def random_cookie():
 				f.write(names[c] + '\n' + s + "\n")
 				c = c + 1
 			f.close()
-		em = discord.Embed(title='Раздача печенюх.', description=lucker.mention + ' получает случайные ' + str(count) + ':cookie:', colour=0xC5934B)
+		em = discord.Embed(title='Раздача печенюх.', 
+			description=lucker.mention + ' получает случайные ' + str(count) + ':cookie:', 
+			colour=0xC5934B)
+		em.set_thumbnail(url=lucker.avatar_url)
 		await client.send_message(client.get_channel('432955061849817088'), embed=em)
 		await asyncio.sleep(random.randint(600, 900))
 
-client.loop.create_task(random_cookie())
+#client.loop.create_task(random_cookie())
 
 #async def presences():
 #	await client.wait_until_ready()
@@ -325,7 +396,7 @@ async def on_message(message):
 	#print('<' + message.channel.name + '>' + '[' + message.author.name + '|' + message.author.id + ']' + message.content)
 	print('<' + message.server.id + '>' + '[' + message.author.name + '|' + message.author.id + ']' + message.content)
 
-	if message.channel.id == '243749885294280704':
+	if message.channel.id in block_channel:
 		return
 
 	global stops
@@ -350,6 +421,11 @@ async def on_message(message):
 	global waifu_list_cost
 	global ban_names
 	global ban_count
+	global stat_names
+	global hug_count
+	global kiss_count
+	global stroke_count
+	global fs_count
 
 	if message.content.startswith(prefix + 'btcprice'):
 		print('---------[command]: btcprice ')
@@ -438,14 +514,13 @@ async def on_message(message):
 												   '[Pineapple Cookie help]\n\n' +
 												   '<Cookie>\n' +
 												   prefix + 'daily - Получить часовую порцию печенюх.\n' +
-												   prefix + 'cookie / ' + prefix +'me - Узнать свой баланс печенюх.\n' +
+												   prefix + 'cookie - Узнать свой баланс печенюх.\n' +
 												   prefix + 'roll <ставка> - Поставить печенюхи на рулетке.\n' +
 												   prefix + 'flip <ставка> <сторона> - Подбросить печенюху. Стороны - up/u и down/d.\n' +
 												   prefix + 'give <кому> <сколько> - Поделиться печенюхами с другом.\n' +
 												   prefix + 'rank - Посмотреть на обжор.\n\n' +
 												   '<Events>\n' +
-												   prefix + 'reg - Регистрация для участия в ивентах. Выдает соответствующую роль.\n' +	
-												   prefix + 'unreg - Убирает у всех роль Участвует в ивенте. Снимает регистрацию.\n\n' +												   
+												   prefix + 'reg - Регистрация для участия в ивентах. Выдает соответствующую роль.\n\n' +												   
 												   '<Waifu>\n' +
 												   prefix + 'get2d <кто> <цена> - Приобрести или выкупить вайфу.\n' +
 												   prefix + 'give2d <кого> <кому> - Подарить свою вайфу.\n' +
@@ -454,14 +529,18 @@ async def on_message(message):
 												   #'Печенюха/печенька - Попросит вкуснях. Это две команды. Буквы могут быть любого размера.\nПишется без префикса.\n' +
 												   #'Меншн Сони выдаст интересный набор смайликов))). Но не стоит слишком часто юзать эту функцию.\nГрозит перманентным баном по айди на доступ к этой команде.\n' +
 												   prefix + 'say <текст> - Напишет ваше сообщение.\n' +
+												   prefix + 'hug <кого> - Обнять кого-то. [20 печенюх]\n' +
+												   prefix + 'kiss <кого> - Поцеловать кого-то. [30 печенюх]\n' +
 												   prefix + 'stroke <кого> - Погладить кого-то. [20 печенюх]\n' +
 												   prefix + 'fs - Покрутить пальчиками. [15 печенюх]\n' +
 												   prefix + 'hi - Поприветствует всех от вашего имени.\n' +
-												   prefix + 'gm - Охайё, т.е доброе утро)).\n\n' +
+												   prefix + 'gm - Охайё, т.е доброе утро)).\n' +
+												   prefix + 'profile / ' + prefix +'me - Показать ваш профиль на сервере.\n\n' +
 												   '<Admin>\n' +
 												   prefix + 'ban <кому> - Выдать бан пользователю. 3 бана - юзер попадет в касту проказников\n' +
 												   prefix + 'unban <кого> - Помиловать пользователя\n' +
 												   prefix + 'banlist / ' + prefix +'bl - Список плохишей\n' +
+												   prefix + 'unreg - Убирает у всех роль Участвует в ивенте. Снимает регистрацию.\n' +	
 												   prefix + 'update - Обновить данные из файлов (печенюхи, бан-лист...)\n' +
 												   prefix + 'ddos <текст> - Будет ддосить заданным текстом 30 раз или до команды >stop\n' +
 												   prefix + 'stop - Остановка ддоса\n' +
@@ -480,7 +559,7 @@ async def on_message(message):
 												   '[Pineapple Cookie help]\n\n' +
 												   '<Cookie>\n' +
 												   prefix + 'daily - Получить часовую порцию печенюх.\n' +
-												   prefix + 'cookie / ' + prefix +'me - Узнать свой баланс печенюх.\n' +
+												   prefix + 'cookie - Узнать свой баланс печенюх.\n' +
 												   prefix + 'roll <ставка> - Поставить печенюхи на рулетке.\n' +
 												   prefix + 'flip <ставка> <сторона> - Подбросить печенюху. Стороны - up/u и down/d.\n' +
 												   prefix + 'give <кому> <сколько> - Поделиться печенюхами с другом.\n' +
@@ -495,10 +574,13 @@ async def on_message(message):
 												   #'Печенюха/печенька - Попросит вкуснях. Это две команды. Буквы могут быть любого размера.\nПишется без префикса.\n' +
 												   #'Меншн Сони выдаст интересный набор смайликов))). Но не стоит слишком часто юзать эту функцию.\nГрозит перманентным баном по айди на доступ к этой команде.\n' +
 												   prefix + 'say <текст> - Напишет ваше сообщение.\n' +
+												   prefix + 'hug <кого> - Обнять кого-то. [20 печенюх]\n' +
+												   prefix + 'kiss <кого> - Поцеловать кого-то. [30 печенюх]\n' +
 												   prefix + 'stroke <кого> - Погладить кого-то. [20 печенюх]\n' +
 												   prefix + 'fs - Покрутить пальчиками. [15 печенюх]\n' +
 												   prefix + 'hi - Поприветствует всех от вашего имени.\n' +
-												   prefix + 'gm - Охайё, т.е доброе утро)).\n\n' +
+												   prefix + 'gm - Охайё, т.е доброе утро)).\n' +
+												   prefix + 'profile / ' + prefix +'me - Показать ваш профиль на сервере.\n\n' +
 												   '<Help>\n' +
 												   prefix + 'help - Вызов этой справки.\n' +
 												   prefix + 'ping - Сомневаешься в том, что он жив???\n' +
@@ -628,11 +710,11 @@ async def on_message(message):
 		await client.send_message(message.channel, ret)
 		await client.delete_message(message)
 
-	if await strcmp(message.content.lower(), 'соня'):
-		print('---------[command]:!sonya')
-		#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!sonya\n```')
-		await client.send_message(message.channel, 'Соня лучшая!!!')
-		await client.delete_message(message)
+	#if await strcmp(message.content.lower(), 'соня'):
+	#	print('---------[command]:!sonya')
+	#	#await client.send_message(client.get_channel('43569861995842766'), '```css\n[command]:!sonya\n```')
+	#	await client.send_message(message.channel, 'Соня лучшая!!!')
+	#	await client.delete_message(message)
 
 
 	if message.content.lower() in mat_list:
@@ -659,6 +741,7 @@ async def on_message(message):
 #------------------------------------------------------------------------------------------------------------------------------
 	if await strcmp(message.content.lower(), prefix + 'daily reset') == 1 and message.author.id in admin_list and message.channel.id in admin_channel_list:
 		print('---------[command]:!daily reset')
+		updates()
 		daily_id = []
 		f = open('daily', 'w')
 		f.write("\n")
@@ -668,6 +751,7 @@ async def on_message(message):
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
 	if await strcmp(message.content.lower(), prefix + 'daily'):
 		print('---------[command]:!daily')
+		updates()
 		if message.author.id in daily_id:
 			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ ', вы уже получили печенюхи)')
 		else:
@@ -702,8 +786,9 @@ async def on_message(message):
 			await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', держи ' + str(cookie_count) + ':cookie:!')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if (await strcmp(message.content.lower(), prefix + 'cookie') == 1 or await strcmp(message.content.lower(), prefix + 'me') == 1):
+	if await strcmp(message.content.lower(), prefix + 'cookie'):
 		print('---------[command]:!cookie')
+		updates()
 		names = []
 		cookie = []
 		f = open('cookie', 'r')
@@ -743,7 +828,7 @@ async def on_message(message):
 			else:
 				bonus = 0
 				if message.author.id in bonus_list:
-					bonus = 20
+					bonus = 7
 				if (random.randint(0, 100) + bonus) > 50:
 				#if (random.random() == 1):
 					cookie[c] = str(int(cookie[c]) + int(comm[1]))
@@ -1009,6 +1094,7 @@ async def on_message(message):
 	if (await strcmp(message.content, prefix + 'rank') or message.content.startswith(prefix + 'rank ')):
 		print('---------[command]:!rank')
 		comm = message.content.split(' ')
+		updates()
 		await client.delete_message(message)
 		if (len(cookie) < 1):
 			await client.send_message(message.channel, 'Список обжор пуст.')
@@ -1060,6 +1146,9 @@ async def on_message(message):
 	if await strcmp(message.content.lower(), prefix + 'event')  and message.author.id in admin_list:
 		print('---------[command]:!event')
 		is_event = 1
+		f = open('event', 'w')
+		f.write('yes')
+		f.close()
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
 	if await strcmp(message.content.lower(), prefix + 'reg') and is_event and message.server.id == '243749885294280704':
@@ -1072,6 +1161,9 @@ async def on_message(message):
 	if await strcmp(message.content.lower(), prefix + 'unreg')  and message.author.id in admin_list:
 		print('---------[command]:!unreg')
 		is_event = 0
+		f = open('event', 'w')
+		f.write('no')
+		f.close()
 		role = discord.utils.get(message.server.roles, id='436549640150581259')
 		for s in message.server.members:
 			if role in s.roles:
@@ -1095,6 +1187,7 @@ async def on_message(message):
 			ret = ret + line
 		f.close()
 		em = discord.Embed(description=ret, colour=0xC5934B)
+		em.set_author(name=message.server.name, icon_url=message.server.icon_url)
 		await client.send_message(message.channel, embed=em)
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1104,19 +1197,44 @@ async def on_message(message):
 		await client.send_message(message.channel, embed=em)
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if message.content.startswith(prefix + 'stroke '):
-		print('---------[command]:!stroke')
+	if message.content.startswith(prefix + 'hug '):
+		print('---------[command]:!hug')
+		comm = message.content.split(' ')
+		await client.delete_message(message)
+		if not comm[1][:2] == '<@' or not comm[1][-1:] == '>':
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'stroke <кого>\n```')
+			return
+		price = 20
 		if message.author.id in names:
 			c = 0
 			while(names[c] != message.author.id):
 				c = c + 1
-			if (20 > int(cookie[c])):
-				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя недостаточно:cookie: :(')
+			if (price > int(cookie[c])):
+				await client.send_message(message.channel, message.author.mention + ', у тебя недостаточно:cookie: :(')
 			else:
-				em = discord.Embed(description=message.author.name + ' гладит ' + message.content[8:], colour=0xC5934B)
-				em.set_image(url=random.choice(stroke_list))
+
+				if comm[1][2:-1] in stat_names:
+					cs = 0
+					while(stat_names[cs] != comm[1][2:-1]):
+						cs = cs + 1
+					hug_count[cs] = hug_count[cs] + 1
+				else:
+					stat_names.append(comm[1][2:-1])
+					hug_count.append(0)
+					kiss_count.append(0)
+					stroke_count.append(0)
+					fs_count.append(0)
+				f = open('stats', 'w')
+				cs = 0
+				for s in stat_names:
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					cs = cs + 1
+				f.close()
+
+				em = discord.Embed(description=message.author.name + ' обнимает ' + comm[1], colour=0xC5934B)
+				em.set_image(url=random.choice(hug_list))
 				await client.send_message(message.channel, embed=em)
-				cookie[c] = str(int(cookie[c]) - 20)
+				cookie[c] = str(int(cookie[c]) - price)
 				f = open('cookie', 'w')
 				c = 0
 				for s in cookie:
@@ -1127,19 +1245,44 @@ async def on_message(message):
 			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет :cookie: :(')
 		await client.delete_message(message)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if await strcmp(message.content, prefix + 'fs'):
-		print('---------[command]:!fs')
+	if message.content.startswith(prefix + 'kiss '):
+		print('---------[command]:!kiss')
+		comm = message.content.split(' ')
+		await client.delete_message(message)
+		if not comm[1][:2] == '<@' or not comm[1][-1:] == '>':
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'stroke <кого>\n```')
+			return
+		price = 30
 		if message.author.id in names:
 			c = 0
 			while(names[c] != message.author.id):
 				c = c + 1
-			if (15 > int(cookie[c])):
-				await client.send_message(message.channel, '<@' + message.author.id+ '>'+ '' + ', у тебя недостаточно:cookie: :(')
+			if (price > int(cookie[c])):
+				await client.send_message(message.channel, message.author.mention + ', у тебя недостаточно:cookie: :(')
 			else:
-				em = discord.Embed(description=message.author.name + ' крутит пальчиками!', colour=0xC5934B)
-				em.set_image(url=random.choice(fs_list))
+
+				if comm[1][2:-1] in stat_names:
+					cs = 0
+					while(stat_names[cs] != comm[1][2:-1]):
+						cs = cs + 1
+					kiss_count[cs] = kiss_count[cs] + 1
+				else:
+					stat_names.append(comm[1][2:-1])
+					hug_count.append(0)
+					kiss_count.append(0)
+					stroke_count.append(0)
+					fs_count.append(0)
+				f = open('stats', 'w')
+				cs = 0
+				for s in stat_names:
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					cs = cs + 1
+				f.close()
+
+				em = discord.Embed(description=message.author.mention + ' целует ' + comm[1], colour=0xC5934B)
+				em.set_image(url=random.choice(kiss_list))
 				await client.send_message(message.channel, embed=em)
-				cookie[c] = str(int(cookie[c]) - 15)
+				cookie[c] = str(int(cookie[c]) - price)
 				f = open('cookie', 'w')
 				c = 0
 				for s in cookie:
@@ -1147,8 +1290,98 @@ async def on_message(message):
 					c = c + 1
 				f.close()
 		else:
-			await client.send_message(message.channel, '<@' + message.author.id+ '>, у тебя нет :cookie: :(')
+			await client.send_message(message.channel, message.author.mention + ', у тебя нет :cookie: :(')
 		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if message.content.startswith(prefix + 'stroke '):
+		print('---------[command]:!stroke')
+		comm = message.content.split(' ')
+		await client.delete_message(message)
+		if not comm[1][:2] == '<@' or not comm[1][-1:] == '>':
+			await client.send_message(message.channel, '```css\nError!!! Введенное значение не является ссылкой на пользователя\nExample: ' + prefix + 'stroke <кого>\n```')
+			return
+		price = 20
+		if message.author.id in names:
+			c = 0
+			while(names[c] != message.author.id):
+				c = c + 1
+			if (price> int(cookie[c])):
+				await client.send_message(message.channel, message.author.mention + ', у тебя недостаточно:cookie: :(')
+			else:
+
+				if comm[1][2:-1] in stat_names:
+					cs = 0
+					while(stat_names[cs] != comm[1][2:-1]):
+						cs = cs + 1
+					stroke_count[cs] = stroke_count[cs] + 1
+				else:
+					stat_names.append(comm[1][2:-1])
+					hug_count.append(0)
+					kiss_count.append(0)
+					stroke_count.append(0)
+					fs_count.append(0)
+				f = open('stats', 'w')
+				cs = 0
+				for s in stat_names:
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					cs = cs + 1
+				f.close()
+
+				em = discord.Embed(description=message.author.mention + ' гладит ' + comm[1], colour=0xC5934B)
+				em.set_image(url=random.choice(stroke_list))
+				await client.send_message(message.channel, embed=em)
+				cookie[c] = str(int(cookie[c]) - price)
+				f = open('cookie', 'w')
+				c = 0
+				for s in cookie:
+					f.write(names[c] + '\n' + s + "\n")
+					c = c + 1
+				f.close()
+		else:
+			await client.send_message(message.channel, message.author.mention + ', у тебя нет :cookie: :(')
+		await client.delete_message(message)
+#--------------------------------------------------------------------------------------------------------------------------------------------------------
+	if await strcmp(message.content, prefix + 'fs'):
+		print('---------[command]:!fs')
+		price = 15
+		if message.author.id in names:
+			c = 0
+			while(names[c] != message.author.id):
+				c = c + 1
+			if (price > int(cookie[c])):
+				await client.send_message(message.channel, message.author.mention + ', у тебя недостаточно:cookie: :(')
+			else:
+
+				if message.author.id in stat_names:
+					cs = 0
+					while(stat_names[cs] != message.author.id):
+						cs = cs + 1
+					fs_count[cs] = fs_count[cs] + 1
+				else:
+					stat_names.append(comm[1])
+					hug_count.append(0)
+					kiss_count.append(0)
+					stroke_count.append(0)
+					fs_count.append(0)
+				f = open('stats', 'w')
+				cs = 0
+				for s in stat_names:
+					f.write(stat_names[cs] + '\n' + str(hug_count[cs]) + ' ' + str(kiss_count[cs]) + ' ' + str(stroke_count[cs]) + ' ' + str(fs_count[cs]) + "\n")
+					cs = cs + 1
+				f.close()
+
+				em = discord.Embed(description=message.author.mention + ' крутит пальчиками!', colour=0xC5934B)
+				em.set_image(url=random.choice(fs_list))
+				await client.send_message(message.channel, embed=em)
+				cookie[c] = str(int(cookie[c]) - price)
+				f = open('cookie', 'w')
+				c = 0
+				for s in cookie:
+					f.write(names[c] + '\n' + s + "\n")
+					c = c + 1
+				f.close()
+		else:
+			await client.send_message(message.channel, message.author.mention + ', у тебя нет :cookie: :(')
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
 	if message.content.startswith(prefix + 'ban ')  and message.author.id in admin_list:
 		comm = message.content.split(' ')
@@ -1257,42 +1490,130 @@ async def on_message(message):
 		em = discord.Embed(title='Список плохишей:', description=ret, colour=0xC5934B)
 		await client.send_message(message.channel, embed=em)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
-	if await strcmp(message.content, prefix + 'profile')  and message.author.id in admin_list:
+	if await strcmp(message.content, prefix + 'profile') or await strcmp(message.content, prefix + 'me'):
 		print('---------[command]:!profile')
 		await client.delete_message(message)
 		c = 0		
-		cook = '0'
+		cook = 'Нет печенюх'
 		if message.author.id in names:
 			while(names[c] != message.author.id):
 				c = c + 1
 			cook = cookie[c]		
-		#waifu = '\n'
-		#await updates()
-		#w = 0
-		#while w < len(waifu_list_own):
-		#	if waifu_list_own[w] == message.author.id:
-		#		waifu = waifu + waifu_list_id[w] + '. Цена - ' + waifu_list_cost[w] + '\n'
-		#	w = w + 1
-		#print(waifu)
-		roles = ''
-		for s in message.author.roles:
-			if s.name == '@everyone':
-				continue
-			roles = s.name + '\n' + roles
-		em = discord.Embed(title='Профиль ' + message.author.name, colour=0xC5934B)
+		waifu = 'Нет вайфу'
+		updates()
+		waifu_list_own = []
+		waifu_list_id = []
+		waifu_list_cost = []
+		f = open('waifu', 'r')
+		line1 = f.readline()
+		line2 = f.readline()
+		line3 = f.readline()
+		k = 0
+		while line1:
+			waifu_list_own.append(line1[:-1])
+			waifu_list_id.append(line2[:-1])
+			waifu_list_cost.append(line3[:-1])
+			line1 = f.readline()
+			line2 = f.readline()
+			line3 = f.readline()
+			k = k + 3
+		f.close()
+		f = open('waifu', 'w')
+		p = 0
+		while len(waifu_list_cost) > 0:
+			p = max(waifu_list_cost)
+			f.write(waifu_list_own[p] + '\n' + waifu_list_id[p] + '\n' + waifu_list_cost[p] + "\n")
+			waifu_list_own.pop(p)
+			waifu_list_id.pop(p)
+			waifu_list_cost.pop(p)
+		f.close()
+		waifu_list_own = []
+		waifu_list_id = []
+		waifu_list_cost = []
+		f = open('waifu', 'r')
+		line1 = f.readline()
+		line2 = f.readline()
+		line3 = f.readline()
+		k = 0
+		while line1:
+			waifu_list_own.append(line1[:-1])
+			waifu_list_id.append(line2[:-1])
+			waifu_list_cost.append(line3[:-1])
+			line1 = f.readline()
+			line2 = f.readline()
+			line3 = f.readline()
+			k = k + 3
+		f.close()
+		w = 0
+		i = 0
+		while w < len(waifu_list_own):
+			if waifu_list_own[w] == message.author.id:
+				if i == 0:
+					waifu = ''
+				if i < 5:
+					waifu = waifu + waifu_list_id[w] + '. Цена - ' + waifu_list_cost[w] + '\n'
+					#for s in message.server.members:
+					#	if s.id == waifu_list_id[w][2:-1]:
+					#		waifu = waifu + s.name + '. Цена - ' + waifu_list_cost[w] + '\n'
+					#waifu = waifu + discord.Server.get_member(waifu_list_id[w][2:-1]).nick + '. Цена - ' + waifu_list_cost[w] + '\n'
+				i = i + 1
+				if i == 6:
+					waifu = waifu + '...\n'
+					break
+			w = w + 1
+		w = 0 
+		rab = 'Нет владельцев'
+		while w < len(waifu_list_own):
+			if waifu_list_id[w] == message.author.mention:
+				rab = '<@' + waifu_list_own[w] + '>. За - ' + waifu_list_cost[w] + '\n'
+				#for s in message.server.members:
+				#	if s.id == waifu_list_own[w]:
+				#		rab = '\n' + s.name + '. За - ' + waifu_list_cost[w] + '\n'
+				#rab = rab + discord.Server.get_member(waifu_list_own[w]).nick + '. За - ' + waifu_list_cost[w] + '\n'
+				break
+			w = w + 1
+		#roles = 'Нет ролей'
+		#i = 0
+		#for s in message.author.roles:
+		#	if s.name == '@everyone':
+		#		continue
+		#	if i == 0:
+		#		roles = ''
+		#	i = i + 1
+		#	roles = '**' + s.name + '**\n' + roles
+		cs = 0
+		while(stat_names[cs] != message.author.id):
+			cs = cs + 1
+		stats = '**Обнят** - ' + str(hug_count[cs]) + ' раз\n**Поцелован** - ' + str(kiss_count[cs]) + ' раз\n**Поглажен** - ' + str(stroke_count[cs]) + ' раз\n**Крутил пальчиками** - ' + str(fs_count[cs]) + ' раз\n'
+		#em = discord.Embed(title='Профиль ' + message.author.name, colour=0xC5934B)
+		em = discord.Embed( colour=0xC5934B)
+		em.set_author(name='Профиль ' + message.author.name)#, icon_url=message.author.avatar_url)
 		em.set_thumbnail(url=message.author.avatar_url)
 		em.add_field(
-			name=':cookie:',
-			value=cook
+			name='***:cookie:Печенюхи:cookie:***',
+			value=cook,
+			inline=True
+			)
+		em.add_field(
+			name='***Статистика:***',
+			value=stats,
+			inline=True
+			)
+		em.add_field(
+			name='***Вайфу:***',
+			value=waifu,
+			inline=True
+			)
+		em.add_field(
+			name='***Куплен:***',
+			value=rab,
+			inline=True
 			)
 		#em.add_field(
-		#	name='Вайфу:',
-		#	value=waifu
+		#	name='***Роли:***',
+		#	value=roles,
+		#	inline=False
 		#	)
-		em.add_field(
-			name='Роли:',
-			value=roles
-			)
 		await client.send_message(message.channel, embed=em)
 #--------------------------------------------------------------------------------------------------------------------------------------------------------
 	if await strcmp(message.content, prefix + 'case')  and message.author.id in admin_list:
@@ -1317,14 +1638,40 @@ async def on_message(message):
 				
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #if message.content.lower() in mat_list:
 #        print('Удаляю мат!')
 #        await client.send_message(message.channel, 'Извени но я вырезала твой мат \nhttps://iichan.hk/a/arch/src/1331445120492.gif%27')
 #        msg = await client.send_message(message.author, 'Не матерись, пожалуста)) ')
 #        await client.edit_message(msg,'Извени но я вырезала твой мат')
 
-
 def updates():
+	global save_channel
+	global daily_id
+	global mat_list
+	global cookie
+	global names
+	global waifu_list_own
+	global waifu_list_id
+	global waifu_list_cost
+	global ban_names
+	global ban_count
 	channel_list = []
 	f = open('channel_list', 'r')
 	line1 = f.readline()
@@ -1334,12 +1681,9 @@ def updates():
 		channel_list.append(line1[:-1])
 		channel_list.append(line2[:-1])
 		line1 = f.readline()
-		line2 = str(f.readline())
-		print(str((c // 2) + 1) + ')' + channel_list[c][:-1] + ' ' + channel_list[c + 1][:-1])
+		line2 = f.readline()
 		c = c + 2
 	f.close()
-
-	print('------')
 
 	f = open('ban', 'r')
 	line1 = f.readline()
@@ -1360,8 +1704,15 @@ def updates():
 	while line1:
 		daily_id.append(line1[:-1])
 		line1 = f.readline()
-		print(str(c + 1) + ')' + daily_id[c])
 		c = c + 1
+	f.close()
+
+	f = open('event', 'r')
+	line1 = f.readline()
+	if line1.startswith('yes'):
+		is_event = 1
+	else:
+		is_event = 0
 	f.close()
 
 	names = []
@@ -1369,11 +1720,13 @@ def updates():
 	f = open('cookie', 'r')
 	line1 = f.readline()
 	line2 = f.readline()
+	c = 0
 	while line1:
 		names.append(line1[:-1])
 		cookie.append(line2[:-1])
 		line1 = f.readline()
 		line2 = f.readline()
+		c = c + 1
 	f.close()
 
 	mat_list = []
@@ -1382,7 +1735,6 @@ def updates():
 	while line1:
 		mat_list.append(line1[:-1])
 		line1 = f.readline()
-	print('mat_list is ready.')
 	f.close()
 
 	waifu_list_own = []
@@ -1392,7 +1744,7 @@ def updates():
 	line1 = f.readline()
 	line2 = f.readline()
 	line3 = f.readline()
-	c = 0
+	k = 0
 	while line1:
 		waifu_list_own.append(line1[:-1])
 		waifu_list_id.append(line2[:-1])
@@ -1400,10 +1752,29 @@ def updates():
 		line1 = f.readline()
 		line2 = f.readline()
 		line3 = f.readline()
-		c = c + 3
+		k = k + 3
 	f.close()
 
-	print('------')
+	stat_names = []
+	hug_count = []
+	kiss_count = []
+	stroke_count = []
+	fs_count = []
+	comm = []
+	f = open('stats', 'r')
+	line1 = f.readline()
+	line2 = f.readline()
+	while line1:
+		stat_names.append(line1[:-1])
+		comm = line2[:-1].split(' ')
+		hug_count.append(int(comm[0]))
+		kiss_count.append(int(comm[1]))
+		stroke_count.append(int(comm[2]))
+		fs_count.append(int(comm[3]))
+		line1 = f.readline()
+		line2 = f.readline()
+	f.close()
+
 
 def max(list):
     maximum = -1
